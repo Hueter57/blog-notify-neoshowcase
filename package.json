@@ -1,0 +1,32 @@
+{
+  "name": "blog-notify-neoshowcase",
+  "version": "1.0.0",
+  "description": "blog-notify running on neoshowcase",
+  "main": "main.js",
+  "scripts": {
+    "start": "hubot -a hubot-traq -n \"$HUBOT_TRAQ_NAME\" \"$@\"",
+    "watch": "./node_modules/typescript/bin/tsc -w"
+  },
+  "author": "Hueter",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Hueter57/blog-notify-neoshowcase.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Hueter57/blog-notify-neoshowcase/issues"
+  },
+  "homepage": "https://github.com/Hueter57/blog-notify-neoshowcase#readme",
+  "keywords": [],
+  "dependencies": {
+    "hubot": "^11.3.4",
+    "hubot-traq": "^2.0.0"
+  },
+  "engines": {
+    "node": "20.x"
+  },
+  "devDependencies": {
+    "@types/hubot": "^11.3.0",
+    "typescript": "^5.8.2"
+  }
+}
