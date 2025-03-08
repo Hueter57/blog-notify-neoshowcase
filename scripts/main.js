@@ -5,7 +5,7 @@
 //
 Object.defineProperty(exports, "__esModule", { value: true });
 module.exports = (robot) => {
-    robot.hear(/ping$/i, (res) => {
-        res.reply("pong");
+    robot.respond(/ping$/i, async (res) => {
+        await res.reply("pong");
     });
 };

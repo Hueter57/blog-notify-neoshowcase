@@ -23,7 +23,7 @@
     "hubot-traq": "^2.0.0"
   },
   "engines": {
-    "node": "20.x"
+    "node": ">= 20.x"
   },
   "devDependencies": {
     "@types/hubot": "^11.3.0",
