@@ -3,6 +3,7 @@
 // Commands:
 //
 
+import { JapaneseDate } from "./corn";
 import { getCrowiPageBody } from "./crowi";
 import { BlogRelayInfo, CrowiInfo } from "./init";
 
@@ -112,11 +113,11 @@ function extractSchedule(pageBody: string): Schedule[] {
 
 // START_DATEとの差分を取得する
 // now - date
-function calcDateDiff({ startDate }: BlogRelayInfo): number {
-  const date = new Date(startDate);
+export function calcDateDiff({ startDate }: BlogRelayInfo): number {
+  const date = JapaneseDate(startDate);
   const dateUtcTime = date.getTime() + date.getTimezoneOffset() * 60 * 1000;
-  const now = new Date();
-  const nowUtcTime = now.getTime() + now.getTimezoneOffset() * 60 * 1000;
+  const today = JapaneseDate();
+  const nowUtcTime = today.getTime() + today.getTimezoneOffset() * 60 * 1000;
   const diff = nowUtcTime - dateUtcTime;
   return Math.floor(diff / (1000 * 60 * 60 * 24));
 }
@@ -166,7 +167,7 @@ function schedulesToCalendar(
   const weeks: Array<Array<[Date, Schedule[]]>> = [];
   let i = 0;
   const scheduleLength = schedules.length;
-  const startDate = new Date(blogRelayInfo.startDate);
+  const startDate = JapaneseDate(blogRelayInfo.startDate);
   const calendarStartDate = dateOffset(startDate, -startDate.getDay());
   while (i < scheduleLength) {
     const week: Array<[Date, Schedule[]]> = [];
@@ -217,7 +218,7 @@ function actualDateOfSchedule(
   schedule: Schedule
 ): Date {
   // UNIXタイムスタンプ
-  const startDateParsed = new Date(startDate);
+  const startDateParsed = JapaneseDate(startDate);
   // 経過日数のms
   const offset = schedule.day - 1;
   return dateOffset(startDateParsed, offset);
