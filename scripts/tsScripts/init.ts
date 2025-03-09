@@ -55,17 +55,17 @@ function init(): EnvData {
       ? ""
       : process.env.TRAQ_LOG_CHANNEL_ID;
   const traQLogChannelPath =
-    process.env.TRAQ_BURI_CHANNEL_PATH === undefined
+    process.env.TRAQ_LOG_CHANNEL_PATH === undefined
       ? ""
-      : process.env.TRAQ_BURI_CHANNEL_PATH;
+      : process.env.TRAQ_LOG_CHANNEL_PATH;
   const traQReviewChannelPath =
     process.env.TRAQ_REVIEW_CHANNEL_PATH === undefined
       ? ""
       : process.env.TRAQ_REVIEW_CHANNEL_PATH;
   const traQBotToken =
-    process.env.TRAQ_BOT_ACCESS_TOKEN === undefined
+    process.env.HUBOT_TRAQ_ACCESS_TOKEN === undefined
       ? ""
-      : process.env.TRAQ_BOT_ACCESS_TOKEN;
+      : process.env.HUBOT_TRAQ_ACCESS_TOKEN;
 
   const blogRelayTag = process.env.TAG === undefined ? "" : process.env.TAG;
   const blogRelayTitle =

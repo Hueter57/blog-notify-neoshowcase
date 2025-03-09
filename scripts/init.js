@@ -20,15 +20,15 @@ function init() {
     const traQLogChannelId = process.env.TRAQ_LOG_CHANNEL_ID === undefined
         ? ""
         : process.env.TRAQ_LOG_CHANNEL_ID;
-    const traQLogChannelPath = process.env.TRAQ_BURI_CHANNEL_PATH === undefined
+    const traQLogChannelPath = process.env.TRAQ_LOG_CHANNEL_PATH === undefined
         ? ""
-        : process.env.TRAQ_BURI_CHANNEL_PATH;
+        : process.env.TRAQ_LOG_CHANNEL_PATH;
     const traQReviewChannelPath = process.env.TRAQ_REVIEW_CHANNEL_PATH === undefined
         ? ""
         : process.env.TRAQ_REVIEW_CHANNEL_PATH;
-    const traQBotToken = process.env.TRAQ_BOT_ACCESS_TOKEN === undefined
+    const traQBotToken = process.env.HUBOT_TRAQ_ACCESS_TOKEN === undefined
         ? ""
-        : process.env.TRAQ_BOT_ACCESS_TOKEN;
+        : process.env.HUBOT_TRAQ_ACCESS_TOKEN;
     const blogRelayTag = process.env.TAG === undefined ? "" : process.env.TAG;
     const blogRelayTitle = process.env.TITLE === undefined ? "" : process.env.TITLE;
     const blogRelayStartDate = process.env.START_DATE === undefined ? "" : process.env.START_DATE;
