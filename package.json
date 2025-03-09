@@ -19,9 +19,11 @@
   "homepage": "https://github.com/Hueter57/blog-notify-neoshowcase#readme",
   "keywords": [],
   "dependencies": {
+    "@types/node-cron": "^3.0.11",
     "axios": "^1.8.2",
     "hubot": "^11.3.4",
-    "hubot-traq": "^2.0.0"
+    "hubot-traq": "^2.0.0",
+    "node-cron": "^3.0.3"
   },
   "engines": {
     "node": ">= 20.x"
