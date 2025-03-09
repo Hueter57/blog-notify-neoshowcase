@@ -8,3 +8,9 @@ export type CrowiInfo = {
   pagePath: string;
   token: string;
 };
+
+export type BlogRelayInfo = {
+  tag: string;
+  title: string;
+  startDate: string;
+};
