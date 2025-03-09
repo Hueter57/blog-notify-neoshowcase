@@ -33,6 +33,7 @@ function startCorn(robot) {
         Scheduled: true,
         timezone: "Asia/Tokyo",
     });
+    console.log("start corn");
 }
 function getCornScheduleString(date) {
     const second = date.getSeconds();

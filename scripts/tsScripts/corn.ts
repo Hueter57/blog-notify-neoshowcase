@@ -39,6 +39,7 @@ function startCorn(robot: hubot.Robot): void {
       timezone: "Asia/Tokyo",
     }
   );
+  console.log("start corn");
 }
 
 function getCornScheduleString(date: Date): string {
