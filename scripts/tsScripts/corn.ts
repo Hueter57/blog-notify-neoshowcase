@@ -31,8 +31,8 @@ function startCorn(robot: hubot.Robot): void {
         return;
       }
       console.log(messages);
-      // robot.send(messages[0], { channelID: envData.traQ.channelId });
-      robot.send(messages[1], { channelID: envData.traQ.logChannelId });
+      robot.send({ channelID: envData.traQ.channelId }, messages[0]);
+      robot.send({ channelID: envData.traQ.logChannelId }, messages[1]);
     },
     {
       Scheduled: true,

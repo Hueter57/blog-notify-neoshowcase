@@ -27,8 +27,8 @@ function startCorn(robot) {
             return;
         }
         console.log(messages);
-        // robot.send(messages[0], { channelID: envData.traQ.channelId });
-        robot.send(messages[1], { channelID: init_1.envData.traQ.logChannelId });
+        robot.send({ channelID: init_1.envData.traQ.channelId }, messages[0]);
+        robot.send({ channelID: init_1.envData.traQ.logChannelId }, messages[1]);
     }, {
         Scheduled: true,
         timezone: "Asia/Tokyo",

@@ -26,7 +26,11 @@ declare module "hubot" {
       options: { [key: string]: any } | Function,
       callback?: (res: Response) => void
     ): void;
-    send(user: string, sendChannel?: SendChannel, sendDM?: SendDM, ...string: string[]): void;
+    send(
+      sendChannel: SendChannel | SendDM,
+      user: string,
+      ...string: string[]
+    ): void;
     reply(user: string, ...string: string[]): void;
   }
 
