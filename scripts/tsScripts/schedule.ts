@@ -3,7 +3,7 @@
 // Commands:
 //
 
-import { JapaneseDate } from "./corn";
+import { JapaneseDate } from "./cron";
 import { getCrowiPageBody } from "./crowi";
 import { BlogRelayInfo, CrowiInfo } from "./init";
 

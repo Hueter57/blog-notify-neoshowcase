@@ -7,13 +7,13 @@ import hubot from "hubot";
 import { calcDateDiff, getMessages } from "./schedule";
 import { envData } from "./init";
 
-const corn = require("node-cron");
+const cron = require("node-cron");
 
 module.exports = (robot: hubot.Robot): void => {
-  startCorn(robot);
+  startCron(robot);
 };
 
-function startCorn(robot: hubot.Robot): void {
+function startCron(robot: hubot.Robot): void {
   if (!envData.validData) {
     return;
   }
@@ -23,7 +23,7 @@ function startCorn(robot: hubot.Robot): void {
     console.log("blogRelay have already ended");
     return;
   }
-  const mainCorn = corn.schedule(
+  const mainCron = cron.schedule(
     "0 0 8 * * *",
     async () => {
       const messages = await getMessages(crowi, blogRelay, noticeMessage);
@@ -39,10 +39,10 @@ function startCorn(robot: hubot.Robot): void {
       timezone: "Asia/Tokyo",
     }
   );
-  console.log("start corn");
+  console.log("start cron");
 }
 
-function getCornScheduleString(date: Date): string {
+function getCronScheduleString(date: Date): string {
   const second = date.getSeconds();
   const minute = date.getMinutes();
   const hour = date.getHours();

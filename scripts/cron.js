@@ -7,11 +7,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.JapaneseDate = JapaneseDate;
 const schedule_1 = require("./schedule");
 const init_1 = require("./init");
-const corn = require("node-cron");
+const cron = require("node-cron");
 module.exports = (robot) => {
-    startCorn(robot);
+    startCron(robot);
 };
-function startCorn(robot) {
+function startCron(robot) {
     if (!init_1.envData.validData) {
         return;
     }
@@ -21,7 +21,7 @@ function startCorn(robot) {
         console.log("blogRelay have already ended");
         return;
     }
-    const mainCorn = corn.schedule("0 0 8 * * *", async () => {
+    const mainCron = cron.schedule("0 0 8 * * *", async () => {
         const messages = await (0, schedule_1.getMessages)(crowi, blogRelay, noticeMessage);
         if (messages.length === 0) {
             return;
@@ -33,9 +33,9 @@ function startCorn(robot) {
         Scheduled: true,
         timezone: "Asia/Tokyo",
     });
-    console.log("start corn");
+    console.log("start cron");
 }
-function getCornScheduleString(date) {
+function getCronScheduleString(date) {
     const second = date.getSeconds();
     const minute = date.getMinutes();
     const hour = date.getHours();

@@ -8,7 +8,7 @@ exports.getMessages = getMessages;
 exports.getMainMessage = getMainMessage;
 exports.getLogMessage = getLogMessage;
 exports.calcDateDiff = calcDateDiff;
-const corn_1 = require("./corn");
+const cron_1 = require("./cron");
 const crowi_1 = require("./crowi");
 const WRITER_REGEXP = /@[a-zA-Z0-9_-]+/g;
 async function getMessages(crowi, blogRelay, noticeMessage) {
@@ -90,9 +90,9 @@ function extractSchedule(pageBody) {
 // START_DATEとの差分を取得する
 // now - date
 function calcDateDiff({ startDate }) {
-    const date = (0, corn_1.JapaneseDate)(startDate);
+    const date = (0, cron_1.JapaneseDate)(startDate);
     const dateUtcTime = date.getTime() + date.getTimezoneOffset() * 60 * 1000;
-    const today = (0, corn_1.JapaneseDate)();
+    const today = (0, cron_1.JapaneseDate)();
     const nowUtcTime = today.getTime() + today.getTimezoneOffset() * 60 * 1000;
     const diff = nowUtcTime - dateUtcTime;
     return Math.floor(diff / (1000 * 60 * 60 * 24));
@@ -129,7 +129,7 @@ function schedulesToCalendar(blogRelayInfo, schedules) {
     const weeks = [];
     let i = 0;
     const scheduleLength = schedules.length;
-    const startDate = (0, corn_1.JapaneseDate)(blogRelayInfo.startDate);
+    const startDate = (0, cron_1.JapaneseDate)(blogRelayInfo.startDate);
     const calendarStartDate = dateOffset(startDate, -startDate.getDay());
     while (i < scheduleLength) {
         const week = [];
@@ -171,7 +171,7 @@ function dateOffset(date, offset) {
 }
 function actualDateOfSchedule({ startDate }, schedule) {
     // UNIXタイムスタンプ
-    const startDateParsed = (0, corn_1.JapaneseDate)(startDate);
+    const startDateParsed = (0, cron_1.JapaneseDate)(startDate);
     // 経過日数のms
     const offset = schedule.day - 1;
     return dateOffset(startDateParsed, offset);
