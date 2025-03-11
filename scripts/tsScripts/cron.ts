@@ -4,33 +4,33 @@
 //
 
 import hubot from "hubot";
-import { calcDateDiff, getMessages } from "./schedule";
+import { calcDateDiff, getMessages, dateOffset } from "./schedule";
 import { envData } from "./init";
 import cron from "node-cron";
 
 module.exports = (robot: hubot.Robot): void => {
-  let mainCorn = startCron(robot);
+  let mainCron = startCron(robot);
 
   robot.hear(/cronStart$/i, async (res: hubot.Response): Promise<void> => {
-    if (mainCorn === null) {
-      mainCorn = startCron(robot);
-      if (mainCorn !== null) {
-        console.log("new corn start");
+    if (mainCron === null) {
+      mainCron = startCron(robot);
+      if (mainCron !== null) {
+        console.log("new cron start");
         res.send("new cron Start");
       } else {
         console.log("cronStart failed");
         res.send("cronStart failed");
       }
     } else {
-      mainCorn.start();
+      mainCron.start();
       console.log("cron start");
-      res.send("corn start");
+      res.send("cron start");
     }
   });
 
   robot.hear(/cronStop$/i, async (res: hubot.Response): Promise<void> => {
-    if (mainCorn !== null) {
-      mainCorn.stop();
+    if (mainCron !== null) {
+      mainCron.stop();
       console.log("cron stop");
       res.send("cron stop");
     } else {
@@ -67,6 +67,33 @@ function startCron(robot: hubot.Robot): cron.ScheduledTask | null {
     }
   );
   console.log("start cron");
+  const endDate = dateOffset(
+    JapaneseDate(blogRelay.startDate),
+    blogRelay.days - 1
+  );
+  endDate.setHours(12, 0, 0, 0);
+  cron.schedule(
+    getCronScheduleString(endDate),
+    () => {
+      if (mainCron !== null) {
+        mainCron.stop();
+        console.log("cron stop");
+        robot.send(
+          { channelID: envData.traQ.logChannelId },
+          `blogRelay end
+cron stop`
+        );
+      } else {
+        console.log("cron is null");
+        robot.send({ channelID: envData.traQ.logChannelId }, "cron is null");
+      }
+    },
+    {
+      scheduled: true,
+      timezone: "Asia/Tokyo",
+    }
+  );
+  console.log("set end cron at ", endDate);
   return mainCron;
 }
 

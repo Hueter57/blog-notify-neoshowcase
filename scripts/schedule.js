@@ -8,6 +8,7 @@ exports.getMessages = getMessages;
 exports.getMainMessage = getMainMessage;
 exports.getLogMessage = getLogMessage;
 exports.calcDateDiff = calcDateDiff;
+exports.dateOffset = dateOffset;
 const cron_1 = require("./cron");
 const crowi_1 = require("./crowi");
 const WRITER_REGEXP = /@[a-zA-Z0-9_-]+/g;
