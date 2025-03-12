@@ -62,11 +62,37 @@ function startCron(robot: hubot.Robot): cron.ScheduledTask | null {
       robot.send({ channelID: envData.traQ.logChannelId }, messages[1]);
     },
     {
-      scheduled: true,
+      scheduled: dateDiff > -5 ? true : false,
       timezone: "Asia/Tokyo",
     }
   );
-  console.log("start cron");
+  if (dateDiff > -5) {
+    console.log("start cron");
+  } else {
+    const startDate = dateOffset(JapaneseDate(blogRelay.startDate), -5);
+    startDate.setHours(0, 0, 0, 0);
+    cron.schedule(
+      getCronScheduleString(startDate),
+      () => {
+        if (mainCron !== null) {
+          mainCron.start();
+          console.log("start cron");
+          robot.send(
+            { channelID: envData.traQ.logChannelId },
+            "blogRelay start"
+          );
+        } else {
+          console.log("cron is null");
+          robot.send({ channelID: envData.traQ.logChannelId }, "cron is null");
+        }
+      },
+      {
+        scheduled: true,
+        timezone: "Asia/Tokyo",
+      }
+    );
+    console.log("set satrt cron at ", startDate);
+  }
   const endDate = dateOffset(
     JapaneseDate(blogRelay.startDate),
     blogRelay.days - 1
