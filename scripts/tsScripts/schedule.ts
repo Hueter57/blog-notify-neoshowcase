@@ -207,7 +207,7 @@ function schedulesToCalendar(
 ${calendarBody}`;
 }
 
-function dateOffset(date: Date, offset: number): Date {
+export function dateOffset(date: Date, offset: number): Date {
   const dateMs = date.getTime();
   const offsetMs = offset * 24 * 60 * 60 * 1000;
   return new Date(dateMs + offsetMs);
