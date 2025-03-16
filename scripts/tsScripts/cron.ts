@@ -95,15 +95,18 @@ function startCron(robot: hubot.Robot): cron.ScheduledTask | null {
   }
   const endDate = dateOffset(
     JapaneseDate(blogRelay.startDate),
-    blogRelay.days - 1
+    blogRelay.days
   );
-  endDate.setHours(12, 0, 0, 0);
+  endDate.setHours(0, 0, 0, 0);
   cron.schedule(
     getCronScheduleString(endDate),
     () => {
       if (mainCron !== null) {
         mainCron.stop();
         console.log("cron stop");
+        robot.send({channelID:envData.traQ.channelId},`# ${envData.blogRelay.title}:kan:
+${envData.blogRelay.title}に参加してくださった皆さんありがとうございました!!
+今回ブログを書かなかった人も書きたいブログができれば、ブログリレー期間を問わずにブログを書いて出してみましょう！`)
         robot.send(
           { channelID: envData.traQ.logChannelId },
           `blogRelay end
