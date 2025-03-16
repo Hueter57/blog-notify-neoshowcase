@@ -3,7 +3,6 @@
 // Commands:
 //
 
-import hubot from "hubot";
 import { Apis, Configuration } from "@traptitech/traq";
 
 export type CrowiInfo = {
@@ -109,7 +108,7 @@ function init(): EnvData {
       days: blogRelayDays,
     },
     noticeMessage,
-    validData: true,
+    validData: false,
   };
 }
 

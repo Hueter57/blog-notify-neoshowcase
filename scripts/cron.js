@@ -87,12 +87,15 @@ function startCron(robot) {
         });
         console.log("set satrt cron at ", startDate);
     }
-    const endDate = (0, schedule_1.dateOffset)(JapaneseDate(blogRelay.startDate), blogRelay.days - 1);
-    endDate.setHours(12, 0, 0, 0);
+    const endDate = (0, schedule_1.dateOffset)(JapaneseDate(blogRelay.startDate), blogRelay.days);
+    endDate.setHours(0, 0, 0, 0);
     node_cron_1.default.schedule(getCronScheduleString(endDate), () => {
         if (mainCron !== null) {
             mainCron.stop();
             console.log("cron stop");
+            robot.send({ channelID: init_1.envData.traQ.channelId }, `# ${init_1.envData.blogRelay.title}:kan:
+${init_1.envData.blogRelay.title}に参加してくださった皆さんありがとうございました!!
+今回ブログを書かなかった人も書きたいブログができれば、ブログリレー期間を問わずにブログを書いて出してみましょう！`);
             robot.send({ channelID: init_1.envData.traQ.logChannelId }, `blogRelay end
 cron stop`);
         }

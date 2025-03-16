@@ -66,7 +66,7 @@ function init() {
             days: blogRelayDays,
         },
         noticeMessage,
-        validData: true,
+        validData: false,
     };
 }
 async function checkEnvData() {
