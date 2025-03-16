@@ -16,8 +16,8 @@ module.exports = (robot: hubot.Robot): void => {
       .map((envStatus) => envStatus.join(" | "))
       .join("\n");
     const message = `env name | status
-  --- | ---
-  ${envStatusMessage}`;
+--- | ---
+${envStatusMessage}`;
     console.log(message);
     res.send(message);
   });
