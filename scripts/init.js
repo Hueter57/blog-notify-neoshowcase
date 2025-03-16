@@ -97,16 +97,16 @@ async function checkEnvData() {
         exports.envData.validData = false;
     }
     else {
-        // const channelName = await getChannelName(traQ.channelId);
-        // envStatus.push(["TRAQ_CHANNEL_ID", channelName]);
+        const channelName = await getChannelName(traQ.channelId);
+        envStatus.push(["TRAQ_CHANNEL_ID", channelName]);
     }
     if (traQ.logChannelId === "") {
         envStatus.push(["TRAQ_LOG_CHANNEL_ID", "undefined"]);
         exports.envData.validData = false;
     }
     else {
-        // const logChannelName = await getChannelName(traQ.logChannelId);
-        // envStatus.push(["TRAQ_LOG_CHANNEL_ID", logChannelName]);
+        const logChannelName = await getChannelName(traQ.logChannelId);
+        envStatus.push(["TRAQ_LOG_CHANNEL_ID", logChannelName]);
     }
     if (traQ.logChannelPath === "") {
         envStatus.push(["TRAQ_LOG_CHANNEL_PATH", "undefined"]);
