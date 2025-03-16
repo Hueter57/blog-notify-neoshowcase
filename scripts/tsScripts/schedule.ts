@@ -3,9 +3,9 @@
 // Commands:
 //
 
+import { BlogRelayInfo, CrowiInfo } from "./init";
 import { JapaneseDate } from "./cron";
 import { getCrowiPageBody } from "./crowi";
-import { BlogRelayInfo, CrowiInfo } from "./init";
 
 const WRITER_REGEXP = /@[a-zA-Z0-9_-]+/g;
 

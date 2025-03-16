@@ -8,8 +8,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.JapaneseDate = JapaneseDate;
-const schedule_1 = require("./schedule");
 const init_1 = require("./init");
+const schedule_1 = require("./schedule");
 const node_cron_1 = __importDefault(require("node-cron"));
 module.exports = (robot) => {
     let mainCron = startCron(robot);

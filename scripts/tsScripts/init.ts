@@ -4,6 +4,7 @@
 //
 
 import hubot from "hubot";
+import { Apis, Configuration } from "@traptitech/traq";
 
 export type CrowiInfo = {
   host: string;
@@ -36,8 +37,6 @@ export type EnvData = {
 
 export const envData: EnvData = init();
 console.log(envData);
-
-import { Apis, Configuration } from "@traptitech/traq";
 checkEnvData();
 
 module.exports = (robot: hubot.Robot): void => {
