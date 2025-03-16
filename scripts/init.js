@@ -6,19 +6,19 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.envData = void 0;
 exports.envData = init();
-module.exports = (robot) => {
-    robot.hear(/checkEnvData$/i, async (res) => {
-        const envStatusList = await checkEnvData();
-        const envStatusMessage = envStatusList
-            .map((envStatus) => envStatus.join(" | "))
-            .join("\n");
-        const message = `env name | status
---- | ---
-${envStatusMessage}`;
-        console.log(message);
-        res.send(message);
-    });
-};
+// module.exports = (robot: hubot.Robot): void => {
+//   robot.hear(/checkEnvData$/i, async (res: hubot.Response): Promise<void> => {
+//     const envStatusList = await checkEnvData();
+//     const envStatusMessage = envStatusList
+//       .map((envStatus) => envStatus.join(" | "))
+//       .join("\n");
+//     const message = `env name | status
+// --- | ---
+// ${envStatusMessage}`;
+//     console.log(message);
+//     res.send(message);
+//   });
+// };
 function init() {
     const crowiHost = process.env.CROWI_HOST === undefined ? "" : process.env.CROWI_HOST;
     const crowiPath = process.env.CROWI_PAGE_PATH === undefined
@@ -79,89 +79,81 @@ function init() {
         validData: true,
     };
 }
-async function checkEnvData() {
-    const { crowi, traQ, blogRelay } = exports.envData;
-    exports.envData.validData = true;
-    let envStatus = [];
-    if (crowi.host === "") {
-        envStatus.push(["CROWI_HOST", "undefined"]);
-        exports.envData.validData = false;
-    }
-    if (crowi.pagePath === "") {
-        envStatus.push(["CROWI_PAGE_PATH", "undefined"]);
-        exports.envData.validData = false;
-    }
-    if (crowi.host !== "" && crowi.pagePath !== "") {
-        envStatus.push(["CROWI_URL", `https://${crowi.host}${crowi.pagePath}`]);
-    }
-    if (crowi.token === "") {
-        envStatus.push(["CROWI_ACCESS_TOKEN", "undefined"]);
-        exports.envData.validData = false;
-    }
-    if (traQ.traqBotToken === "") {
-        envStatus.push(["HUBOT_TRAQ_ACCESS_TOKEN", "undefined"]);
-        exports.envData.validData = false;
-    }
-    if (traQ.channelId === "") {
-        envStatus.push(["TRAQ_CHANNEL_ID", "undefined"]);
-        exports.envData.validData = false;
-    }
-    else {
-        // const channelName = await getChannelName(traQ.channelId);
-        // envStatus.push(["TRAQ_CHANNEL_ID", channelName]);
-    }
-    if (traQ.logChannelId === "") {
-        envStatus.push(["TRAQ_LOG_CHANNEL_ID", "undefined"]);
-        exports.envData.validData = false;
-    }
-    else {
-        // const logChannelName = await getChannelName(traQ.logChannelId);
-        // envStatus.push(["TRAQ_LOG_CHANNEL_ID", logChannelName]);
-    }
-    if (traQ.logChannelPath === "") {
-        envStatus.push(["TRAQ_LOG_CHANNEL_PATH", "undefined"]);
-        exports.envData.validData = false;
-    }
-    else {
-        envStatus.push(["TRAQ_LOG_CHANNEL_PATH", traQ.logChannelPath]);
-    }
-    if (traQ.reviewChannelPath === "") {
-        envStatus.push(["TRAQ_REVIEW_CHANNEL_PATH", "undefined"]);
-        exports.envData.validData = false;
-    }
-    else {
-        envStatus.push(["TRAQ_REVIEW_CHANNEL_PATH", traQ.reviewChannelPath]);
-    }
-    if (blogRelay.title === "") {
-        envStatus.push(["TITLE", "undefined"]);
-        exports.envData.validData = false;
-    }
-    else {
-        envStatus.push(["TITLE", blogRelay.title]);
-    }
-    if (blogRelay.tag === "") {
-        envStatus.push(["TAG", "undefined"]);
-        exports.envData.validData = false;
-    }
-    else {
-        envStatus.push(["TAG", blogRelay.tag]);
-    }
-    if (blogRelay.startDate === "") {
-        envStatus.push(["START_DATE", "undefined"]);
-        exports.envData.validData = false;
-    }
-    else {
-        envStatus.push(["START_DATE", blogRelay.startDate]);
-    }
-    if (blogRelay.days === 0) {
-        envStatus.push(["BLOG_DAYS", "undefined"]);
-        exports.envData.validData = false;
-    }
-    else {
-        envStatus.push(["BLOG_DAYS", blogRelay.days.toString()]);
-    }
-    return envStatus;
-}
+// async function checkEnvData(): Promise<string[][]> {
+//   const { crowi, traQ, blogRelay } = envData;
+//   envData.validData = true;
+//   let envStatus: string[][] = [];
+//   if (crowi.host === "") {
+//     envStatus.push(["CROWI_HOST", "undefined"]);
+//     envData.validData = false;
+//   }
+//   if (crowi.pagePath === "") {
+//     envStatus.push(["CROWI_PAGE_PATH", "undefined"]);
+//     envData.validData = false;
+//   }
+//   if (crowi.host !== "" && crowi.pagePath !== "") {
+//     envStatus.push(["CROWI_URL", `https://${crowi.host}${crowi.pagePath}`]);
+//   }
+//   if (crowi.token === "") {
+//     envStatus.push(["CROWI_ACCESS_TOKEN", "undefined"]);
+//     envData.validData = false;
+//   }
+//   if (traQ.traqBotToken === "") {
+//     envStatus.push(["HUBOT_TRAQ_ACCESS_TOKEN", "undefined"]);
+//     envData.validData = false;
+//   }
+//   if (traQ.channelId === "") {
+//     envStatus.push(["TRAQ_CHANNEL_ID", "undefined"]);
+//     envData.validData = false;
+//   } else {
+//     // const channelName = await getChannelName(traQ.channelId);
+//     // envStatus.push(["TRAQ_CHANNEL_ID", channelName]);
+//   }
+//   if (traQ.logChannelId === "") {
+//     envStatus.push(["TRAQ_LOG_CHANNEL_ID", "undefined"]);
+//     envData.validData = false;
+//   } else {
+//     // const logChannelName = await getChannelName(traQ.logChannelId);
+//     // envStatus.push(["TRAQ_LOG_CHANNEL_ID", logChannelName]);
+//   }
+//   if (traQ.logChannelPath === "") {
+//     envStatus.push(["TRAQ_LOG_CHANNEL_PATH", "undefined"]);
+//     envData.validData = false;
+//   } else {
+//     envStatus.push(["TRAQ_LOG_CHANNEL_PATH", traQ.logChannelPath]);
+//   }
+//   if (traQ.reviewChannelPath === "") {
+//     envStatus.push(["TRAQ_REVIEW_CHANNEL_PATH", "undefined"]);
+//     envData.validData = false;
+//   } else {
+//     envStatus.push(["TRAQ_REVIEW_CHANNEL_PATH", traQ.reviewChannelPath]);
+//   }
+//   if (blogRelay.title === "") {
+//     envStatus.push(["TITLE", "undefined"]);
+//     envData.validData = false;
+//   } else {
+//     envStatus.push(["TITLE", blogRelay.title]);
+//   }
+//   if (blogRelay.tag === "") {
+//     envStatus.push(["TAG", "undefined"]);
+//     envData.validData = false;
+//   } else {
+//     envStatus.push(["TAG", blogRelay.tag]);
+//   }
+//   if (blogRelay.startDate === "") {
+//     envStatus.push(["START_DATE", "undefined"]);
+//     envData.validData = false;
+//   } else {
+//     envStatus.push(["START_DATE", blogRelay.startDate]);
+//   }
+//   if (blogRelay.days === 0) {
+//     envStatus.push(["BLOG_DAYS", "undefined"]);
+//     envData.validData = false;
+//   } else {
+//     envStatus.push(["BLOG_DAYS", blogRelay.days.toString()]);
+//   }
+//   return envStatus;
+// }
 // export async function getChannelName(channelid: string): Promise<string> {
 //   let name: string[] = [];
 //   const traqApi = new Apis(
