@@ -8,8 +8,28 @@ exports.envData = void 0;
 exports.checkEnvData = checkEnvData;
 exports.getChannelName = getChannelName;
 const traq_1 = require("@traptitech/traq");
-exports.envData = init();
-console.log(exports.envData);
+exports.envData = {
+    crowi: {
+        host: "",
+        pagePath: "",
+        token: "",
+    },
+    traQ: {
+        channelId: "",
+        logChannelId: "",
+        logChannelPath: "",
+        reviewChannelPath: "",
+        traqBotToken: "",
+    },
+    blogRelay: {
+        tag: "",
+        title: "",
+        startDate: "",
+        days: 0,
+    },
+    noticeMessage: "",
+    validData: false,
+};
 module.exports = (robot) => {
     robot.hear(/checkEnvData$/i, async (res) => {
         const envStatusList = await checkEnvData();

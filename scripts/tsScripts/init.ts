@@ -35,8 +35,28 @@ export type EnvData = {
   validData: boolean;
 };
 
-export const envData: EnvData = init();
-console.log(envData);
+export let envData: EnvData = {
+  crowi: {
+    host: "",
+    pagePath: "",
+    token: "",
+  },
+  traQ: {
+    channelId: "",
+    logChannelId: "",
+    logChannelPath: "",
+    reviewChannelPath: "",
+    traqBotToken: "",
+  },
+  blogRelay: {
+    tag: "",
+    title: "",
+    startDate: "",
+    days: 0,
+  },
+  noticeMessage: "",
+  validData: false,
+};
 
 module.exports = (robot: hubot.Robot): void => {
   robot.hear(/checkEnvData$/i, async (res: hubot.Response): Promise<void> => {
