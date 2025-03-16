@@ -86,6 +86,7 @@ function startCron(robot) {
             timezone: "Asia/Tokyo",
         });
         console.log("set satrt cron at ", startDate);
+        robot.send({ channelID: init_1.envData.traQ.logChannelId }, "set satrt cron at " + startDate);
     }
     const endDate = (0, schedule_1.dateOffset)(JapaneseDate(blogRelay.startDate), blogRelay.days);
     endDate.setHours(0, 0, 0, 0);
@@ -108,6 +109,7 @@ cron stop`);
         timezone: "Asia/Tokyo",
     });
     console.log("set end cron at ", endDate);
+    robot.send({ channelID: init_1.envData.traQ.logChannelId }, "set end cron at " + endDate);
     return mainCron;
 }
 function getCronScheduleString(date) {

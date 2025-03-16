@@ -92,11 +92,12 @@ function startCron(robot: hubot.Robot): cron.ScheduledTask | null {
       }
     );
     console.log("set satrt cron at ", startDate);
+    robot.send(
+      { channelID: envData.traQ.logChannelId },
+      "set satrt cron at " + startDate
+    );
   }
-  const endDate = dateOffset(
-    JapaneseDate(blogRelay.startDate),
-    blogRelay.days
-  );
+  const endDate = dateOffset(JapaneseDate(blogRelay.startDate), blogRelay.days);
   endDate.setHours(0, 0, 0, 0);
   cron.schedule(
     getCronScheduleString(endDate),
@@ -104,9 +105,12 @@ function startCron(robot: hubot.Robot): cron.ScheduledTask | null {
       if (mainCron !== null) {
         mainCron.stop();
         console.log("cron stop");
-        robot.send({channelID:envData.traQ.channelId},`# ${envData.blogRelay.title}:kan:
+        robot.send(
+          { channelID: envData.traQ.channelId },
+          `# ${envData.blogRelay.title}:kan:
 ${envData.blogRelay.title}に参加してくださった皆さんありがとうございました!!
-今回ブログを書かなかった人も書きたいブログができれば、ブログリレー期間を問わずにブログを書いて出してみましょう！`)
+今回ブログを書かなかった人も書きたいブログができれば、ブログリレー期間を問わずにブログを書いて出してみましょう！`
+        );
         robot.send(
           { channelID: envData.traQ.logChannelId },
           `blogRelay end
@@ -123,6 +127,10 @@ cron stop`
     }
   );
   console.log("set end cron at ", endDate);
+  robot.send(
+    { channelID: envData.traQ.logChannelId },
+    "set end cron at " + endDate
+  );
   return mainCron;
 }
 
