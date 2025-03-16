@@ -5,10 +5,11 @@
 //
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.envData = void 0;
-const channel_1 = require("./channel");
+exports.getChannelName = getChannelName;
+const traq_1 = require("@traptitech/traq");
 exports.envData = init();
-checkEnvData();
 module.exports = (robot) => {
+    checkEnvData();
     robot.hear(/checkEnvData$/i, async (res) => {
         const envStatusList = await checkEnvData();
         const envStatusMessage = envStatusList
@@ -109,7 +110,7 @@ async function checkEnvData() {
         exports.envData.validData = false;
     }
     else {
-        const channelName = await (0, channel_1.getChannelName)(traQ.channelId);
+        const channelName = await getChannelName(traQ.channelId);
         envStatus.push(["TRAQ_CHANNEL_ID", channelName]);
     }
     if (traQ.logChannelId === "") {
@@ -117,7 +118,7 @@ async function checkEnvData() {
         exports.envData.validData = false;
     }
     else {
-        const logChannelName = await (0, channel_1.getChannelName)(traQ.logChannelId);
+        const logChannelName = await getChannelName(traQ.logChannelId);
         envStatus.push(["TRAQ_LOG_CHANNEL_ID", logChannelName]);
     }
     if (traQ.logChannelPath === "") {
@@ -163,4 +164,30 @@ async function checkEnvData() {
         envStatus.push(["BLOG_DAYS", blogRelay.days.toString()]);
     }
     return envStatus;
+}
+async function getChannelName(channelid) {
+    let name = [];
+    const traqApi = new traq_1.Apis(new traq_1.Configuration({
+        accessToken: exports.envData.traQ.traqBotToken,
+    }));
+    try {
+        for (let i = 0; i < 5; i++) {
+            const response = await traqApi.getChannel(channelid);
+            name.unshift(response.data.name);
+            if (response.statusText !== "OK") {
+                return response.statusText;
+            }
+            if (response.data.parentId === null) {
+                break;
+            }
+            else {
+                channelid = response.data.parentId;
+            }
+        }
+        return `#${name.join("/")}`;
+    }
+    catch (error) {
+        console.error(error);
+        return `Error: ${error}`;
+    }
 }

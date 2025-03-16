@@ -4,7 +4,7 @@
 //
 
 import hubot from "hubot";
-import { getChannelName } from "./channel";
+import { Apis, Configuration } from "@traptitech/traq";
 
 export type CrowiInfo = {
   host: string;
@@ -36,9 +36,9 @@ export type EnvData = {
 };
 
 export const envData: EnvData = init();
-checkEnvData();
 
 module.exports = (robot: hubot.Robot): void => {
+  checkEnvData();
   robot.hear(/checkEnvData$/i, async (res: hubot.Response): Promise<void> => {
     const envStatusList = await checkEnvData();
     const envStatusMessage = envStatusList
@@ -128,7 +128,7 @@ function init(): EnvData {
 }
 
 async function checkEnvData(): Promise<string[][]> {
-  const { crowi, traQ, blogRelay} = envData;
+  const { crowi, traQ, blogRelay } = envData;
   envData.validData = true;
   let envStatus: string[][] = [];
   if (crowi.host === "") {
@@ -139,8 +139,8 @@ async function checkEnvData(): Promise<string[][]> {
     envStatus.push(["CROWI_PAGE_PATH", "undefined"]);
     envData.validData = false;
   }
-  if(crowi.host !== "" && crowi.pagePath !== "") {
-    envStatus.push(["CROWI_URL", `https://${crowi.host}${crowi.pagePath}`])
+  if (crowi.host !== "" && crowi.pagePath !== "") {
+    envStatus.push(["CROWI_URL", `https://${crowi.host}${crowi.pagePath}`]);
   }
   if (crowi.token === "") {
     envStatus.push(["CROWI_ACCESS_TOKEN", "undefined"]);
@@ -203,4 +203,31 @@ async function checkEnvData(): Promise<string[][]> {
     envStatus.push(["BLOG_DAYS", blogRelay.days.toString()]);
   }
   return envStatus;
+}
+
+export async function getChannelName(channelid: string): Promise<string> {
+  let name: string[] = [];
+  const traqApi = new Apis(
+    new Configuration({
+      accessToken: envData.traQ.traqBotToken,
+    })
+  );
+  try {
+    for (let i = 0; i < 5; i++) {
+      const response = await traqApi.getChannel(channelid);
+      name.unshift(response.data.name);
+      if (response.statusText !== "OK") {
+        return response.statusText;
+      }
+      if (response.data.parentId === null) {
+        break;
+      } else {
+        channelid = response.data.parentId;
+      }
+    }
+    return `#${name.join("/")}`;
+  } catch (error) {
+    console.error(error);
+    return `Error: ${error}`;
+  }
 }
