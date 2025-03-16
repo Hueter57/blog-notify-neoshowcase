@@ -35,10 +35,10 @@ export type EnvData = {
   validData: boolean;
 };
 
-export const envData: EnvData = init();
+export let envData: EnvData = init();
+checkEnvData();
 
 module.exports = (robot: hubot.Robot): void => {
-  checkEnvData();
   robot.hear(/checkEnvData$/i, async (res: hubot.Response): Promise<void> => {
     const envStatusList = await checkEnvData();
     const envStatusMessage = envStatusList

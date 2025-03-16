@@ -8,8 +8,8 @@ exports.envData = void 0;
 exports.getChannelName = getChannelName;
 const traq_1 = require("@traptitech/traq");
 exports.envData = init();
+checkEnvData();
 module.exports = (robot) => {
-    checkEnvData();
     robot.hear(/checkEnvData$/i, async (res) => {
         const envStatusList = await checkEnvData();
         const envStatusMessage = envStatusList
