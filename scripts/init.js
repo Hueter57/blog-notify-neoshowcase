@@ -6,9 +6,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.envData = void 0;
 exports.getChannelName = getChannelName;
-const traq_1 = require("@traptitech/traq");
 exports.envData = init();
 console.log(exports.envData);
+const traq_1 = require("@traptitech/traq");
 checkEnvData();
 module.exports = (robot) => {
     robot.hear(/checkEnvData$/i, async (res) => {
