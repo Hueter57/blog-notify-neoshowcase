@@ -4,13 +4,9 @@
 // Commands:
 //
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.traqApi = exports.envData = void 0;
-const traq_1 = require("@traptitech/traq");
+exports.envData = void 0;
 const channel_1 = require("./channel");
 exports.envData = init();
-exports.traqApi = new traq_1.Apis(new traq_1.Configuration({
-    accessToken: exports.envData.traQ.traqBotToken,
-}));
 checkEnvData();
 module.exports = (robot) => {
     robot.hear(/checkEnvData$/i, async (res) => {

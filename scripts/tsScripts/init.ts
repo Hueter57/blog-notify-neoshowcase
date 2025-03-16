@@ -4,7 +4,6 @@
 //
 
 import hubot from "hubot";
-import { Apis, Configuration } from "@traptitech/traq";
 import { getChannelName } from "./channel";
 
 export type CrowiInfo = {
@@ -37,11 +36,6 @@ export type EnvData = {
 };
 
 export const envData: EnvData = init();
-export let traqApi = new Apis(
-  new Configuration({
-    accessToken: envData.traQ.traqBotToken,
-  })
-);
 checkEnvData();
 
 module.exports = (robot: hubot.Robot): void => {
