@@ -35,7 +35,8 @@ export type EnvData = {
   validData: boolean;
 };
 
-export let envData: EnvData = init();
+export const envData: EnvData = init();
+console.log(envData);
 checkEnvData();
 
 module.exports = (robot: hubot.Robot): void => {
