@@ -37,7 +37,6 @@ export type EnvData = {
 
 export const envData: EnvData = init();
 console.log(envData);
-checkEnvData();
 
 module.exports = (robot: hubot.Robot): void => {
   robot.hear(/checkEnvData$/i, async (res: hubot.Response): Promise<void> => {
@@ -128,7 +127,7 @@ function init(): EnvData {
   };
 }
 
-async function checkEnvData(): Promise<string[][]> {
+export async function checkEnvData(): Promise<string[][]> {
   const { crowi, traQ, blogRelay } = envData;
   envData.validData = true;
   let envStatus: string[][] = [];
