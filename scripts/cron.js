@@ -44,7 +44,7 @@ module.exports = (robot) => {
     });
 };
 function startCron(robot) {
-    if (!init_1.envData.validData) {
+    if (init_1.envData.validData === undefined || !init_1.envData.validData) {
         return null;
     }
     const { crowi, blogRelay, noticeMessage } = init_1.envData;

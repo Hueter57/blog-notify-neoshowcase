@@ -41,7 +41,7 @@ module.exports = (robot: hubot.Robot): void => {
 };
 
 function startCron(robot: hubot.Robot): cron.ScheduledTask | null {
-  if (!envData.validData) {
+  if (envData.validData === undefined || !envData.validData) {
     return null;
   }
   const { crowi, blogRelay, noticeMessage } = envData;
