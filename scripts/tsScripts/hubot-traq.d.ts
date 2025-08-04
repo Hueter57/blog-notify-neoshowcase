@@ -35,7 +35,7 @@ declare module "hubot" {
   }
 
   export interface Response {
-    match: [string, string, { index: number }, { input: string }];
+    match: string[];
 
     message: {
       id: string;

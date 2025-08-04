@@ -3,6 +3,7 @@
 // Commands:
 //
 
+import hubot from "hubot";
 import { Apis, Configuration } from "@traptitech/traq";
 
 export type CrowiInfo = {
@@ -111,6 +112,90 @@ function init(): EnvData {
     validData: false,
   };
 }
+
+module.exports = (robot: hubot.Robot): void => {
+  robot.respond(/changeEnv ([^,]+),([^,]+)$/i, async (res: hubot.Response): Promise<void> => {
+    let envName = res.match[1];
+    let newValue = res.match[2];
+
+
+    if (envName === undefined) {
+      res.send("環境変数のkeyを指定してください");
+      return;
+    }
+
+    if (newValue === undefined || newValue === "") {
+      res.send("新しい値を指定してください");
+      return;
+    }
+    
+    switch (envName) {
+      case "TITLE":
+        envData.blogRelay.title = newValue;
+        break;
+      case "TAG":
+        envData.blogRelay.tag = newValue;
+        break;
+      case "START_DATE":
+        if (!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\+\d{2}:\d{2}$/.test(newValue)) {
+          res.send("START_DATEはYYYY-MM-DDTHH:mm:ss+09:00形式でなければなりません");
+          return;
+        }
+        envData.blogRelay.startDate = newValue;
+        break;
+      case "BLOG_DAYS":
+        const days = parseInt(newValue);
+        if (isNaN(days) || days <= 0) {
+          res.send("BLOG_DAYSは0より大きな整数でなければなりません");
+          return;
+        }
+        envData.blogRelay.days = days;
+        break;
+      case "TRAQ_CHANNEL_ID":
+        const channelName = await getChannelName(newValue);
+        if (channelName.startsWith("Error:")) {
+          res.send("IDが無効です" + channelName);
+          return;
+        }
+        envData.traQ.channelId = newValue;
+        break;
+      case "TRAQ_LOG_CHANNEL_ID":
+        const logChannelName = await getChannelName(newValue);
+        if (logChannelName.startsWith("Error:")) {
+          res.send("IDが無効です" + logChannelName);
+          return;
+        }
+        envData.traQ.logChannelId = newValue;
+        break;
+      case "TRAQ_LOG_CHANNEL_PATH":
+        if (!/^#(\/[a-zA-Z0-9_-]+)$/.test(newValue)) {
+          res.send("TRAQ_LOG_CHANNEL_PATHの形式が正しくありません");
+          return;
+        }
+        envData.traQ.logChannelPath = newValue;
+        break;
+      case "TRAQ_REVIEW_CHANNEL_PATH":
+        if (!/^#(\/[a-zA-Z0-9_-]+)$/.test(newValue)) {
+          res.send("TRAQ_REVIEW_CHANNEL_PATHの形式が正しくありません");
+          return;
+        }
+        envData.traQ.reviewChannelPath = newValue;
+        break;
+      case "CROWI_PAGE_PATH":
+        if (!/^\/[^\/]+$/.test(newValue)) {
+          res.send("CROWI_PAGE_PATHの形式が正しくありません");
+          return;
+        }
+        envData.crowi.pagePath = newValue;
+        break;
+      default:
+        res.send(`${envName} は無効なkeyです`);
+        return;
+    }
+    envData.validData = false;
+    res.send(`${envName} を変更しました`);
+  });
+};
 
 export async function checkEnvData(): Promise<string[][]> {
   const { crowi, traQ, blogRelay } = envData;

@@ -26,6 +26,8 @@ ${envStatusMessage}`;
 - \`help\`: ヘルプを表示\n
 - \`checkEnvData\`: 環境変数の確認\n
 - \`cronStart\`: cronの開始 (環境変数変更後一度\`checkEnvData\`の実行が必要)\n
-- \`cronStop\`: cronの停止`);
+- \`cronStop\`: cronの停止
+- \`changeEnv <key>,<value>\`: 環境変数の変更 (例: \`changeEnv TITLE,新しいタイトル\`)
+    - <key> \`TITLE\`, \`TAG\`, \`START_DATE\`, \`BLOG_DAYS\`, \`TRAQ_CHANNEL_ID\`, \`TRAQ_LOG_CHANNEL_ID\`, \`TRAQ_LOG_CHANNEL_PATH\`, \`TRAQ_REVIEW_CHANNEL_PATH\`, \`CROWI_PAGE_PATH\``);
     });
 };
