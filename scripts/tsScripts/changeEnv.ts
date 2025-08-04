@@ -83,7 +83,7 @@ module.exports = (robot: hubot.Robot): void => {
         message += `「${newValue}」に変更しました`;
         break;
       case "CROWI_PAGE_PATH":
-        if (!/^\/[^\/]+$/.test(newValue)) {
+        if (!/^(\/[^\/]+)+$/.test(newValue)) {
           res.send("CROWI_PAGE_PATHの形式が正しくありません");
           return;
         }
