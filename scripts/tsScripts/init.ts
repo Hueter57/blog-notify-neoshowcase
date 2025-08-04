@@ -128,13 +128,15 @@ module.exports = (robot: hubot.Robot): void => {
       res.send("新しい値を指定してください");
       return;
     }
-    
+    let message = `${envName} を`;
     switch (envName) {
       case "TITLE":
         envData.blogRelay.title = newValue;
+        message += `「${newValue}」に変更しました`;
         break;
       case "TAG":
         envData.blogRelay.tag = newValue;
+        message += `「${newValue}」に変更しました`;
         break;
       case "START_DATE":
         if (!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\+\d{2}:\d{2}$/.test(newValue)) {
@@ -142,6 +144,7 @@ module.exports = (robot: hubot.Robot): void => {
           return;
         }
         envData.blogRelay.startDate = newValue;
+        message += `「${newValue}」に変更しました`;
         break;
       case "BLOG_DAYS":
         const days = parseInt(newValue);
@@ -150,6 +153,7 @@ module.exports = (robot: hubot.Robot): void => {
           return;
         }
         envData.blogRelay.days = days;
+        message += `「${newValue}」に変更しました`;
         break;
       case "TRAQ_CHANNEL_ID":
         const channelName = await getChannelName(newValue);
@@ -158,6 +162,7 @@ module.exports = (robot: hubot.Robot): void => {
           return;
         }
         envData.traQ.channelId = newValue;
+        message += `「${newValue}(${channelName})」に変更しました`;
         break;
       case "TRAQ_LOG_CHANNEL_ID":
         const logChannelName = await getChannelName(newValue);
@@ -166,6 +171,7 @@ module.exports = (robot: hubot.Robot): void => {
           return;
         }
         envData.traQ.logChannelId = newValue;
+        message += `「${newValue}(${logChannelName})」に変更しました`;
         break;
       case "TRAQ_LOG_CHANNEL_PATH":
         if (!/^#(\/[a-zA-Z0-9_-]+)$/.test(newValue)) {
@@ -173,6 +179,7 @@ module.exports = (robot: hubot.Robot): void => {
           return;
         }
         envData.traQ.logChannelPath = newValue;
+        message += `「${newValue}」に変更しました`;
         break;
       case "TRAQ_REVIEW_CHANNEL_PATH":
         if (!/^#(\/[a-zA-Z0-9_-]+)$/.test(newValue)) {
@@ -180,6 +187,7 @@ module.exports = (robot: hubot.Robot): void => {
           return;
         }
         envData.traQ.reviewChannelPath = newValue;
+        message += `「${newValue}」に変更しました`;
         break;
       case "CROWI_PAGE_PATH":
         if (!/^\/[^\/]+$/.test(newValue)) {
@@ -187,13 +195,16 @@ module.exports = (robot: hubot.Robot): void => {
           return;
         }
         envData.crowi.pagePath = newValue;
+        message += `「${newValue}」に変更しました`;
         break;
       default:
         res.send(`${envName} は無効なkeyです`);
         return;
     }
     envData.validData = false;
-    res.send(`${envName} を変更しました`);
+    console.log(message);
+    res.send(message);
+    robot.send({userID: "236fe853-f208-477b-9f1f-0f42fe614d3b"} as any, `環境変数が変更されました: ${envName} = ${newValue}`);
   });
 };
 
