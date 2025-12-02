@@ -32,6 +32,7 @@
   "devDependencies": {
     "@types/hubot": "^11.3.0",
     "@types/node": "^24.10.1",
+    "prisma": "^6.19.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3"
   }

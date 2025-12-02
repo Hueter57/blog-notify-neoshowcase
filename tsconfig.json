@@ -1,6 +1,9 @@
 {
   "compilerOptions": {
-    "target": "ES2019",
+    "sourceMap": true,
+    "lib": ["ESNext"],
+    "moduleResolution": "node",
+    "target": "ES2023",
     "module": "commonjs",
     "outDir": "./scripts/",
     "rootDir": "./scripts/tsScripts",
