@@ -1,10 +1,10 @@
 import 'dotenv/config'
-import { PrismaClient } from './generated/prisma/client'
+import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
 export type ScheduleOverview = {
-  id: string;
+  id: number;
   title: string;
 };
 
@@ -20,7 +20,7 @@ export type CreateScheduleData = {
 };
 
 export type Admin = {
-  id: string;
+  id: number;
   userid: string;
 };
 
@@ -28,7 +28,7 @@ export type Admin = {
 // schedule
 
 export async function getScheduleList(): Promise<ScheduleOverview[]> {
-  const schedules = await prisma.schedule.findMany({
+  const schedules: ScheduleOverview[] = await prisma.schedule.findMany({
     select: {
       id: true,
       title: true,

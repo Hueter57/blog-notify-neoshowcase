@@ -5,7 +5,7 @@ exports.CreateBlogSchedule = CreateBlogSchedule;
 exports.getAdminList = getAdminList;
 exports.createAdmin = createAdmin;
 require("dotenv/config");
-const client_1 = require("./generated/prisma/client");
+const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 // schedule
 async function getScheduleList() {

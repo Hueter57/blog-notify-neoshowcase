@@ -19,6 +19,7 @@
   "homepage": "https://github.com/Hueter57/blog-notify-neoshowcase#readme",
   "keywords": [],
   "dependencies": {
+    "@prisma/client": "^6.19.0",
     "@traptitech/traq": "^3.22.0-4",
     "@types/node-cron": "^3.0.11",
     "axios": "^1.8.2",
