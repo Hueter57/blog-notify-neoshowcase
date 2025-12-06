@@ -1,8 +1,3 @@
-// Description:
-//
-// Commands:
-//
-
 import * as hubot from "hubot";
 import { checkEnvData } from "./init";
 
