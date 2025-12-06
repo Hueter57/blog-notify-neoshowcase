@@ -6,7 +6,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const init_1 = require("./init");
 module.exports = (robot) => {
-    robot.send({ channelID: init_1.envData.traQ.channelId }, "bot started");
+    robot.send({ channelID: init_1.envData.traQ.logChannelId }, "bot started");
     robot.respond(/ping$/i, async (res) => {
         await res.reply("pong");
     });
