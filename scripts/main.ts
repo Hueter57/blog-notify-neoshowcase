@@ -6,6 +6,8 @@
 import * as hubot from "hubot";
 import { checkEnvData } from "./init";
 
+console.log("main.ts loaded");
+
 module.exports = (robot: hubot.Robot): void => {
   robot.respond(/ping$/i, async (res: hubot.Response): Promise<void> => {
     await res.reply("pong");
