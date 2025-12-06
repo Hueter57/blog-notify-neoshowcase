@@ -3,7 +3,6 @@
 // Commands:
 //
 
-import hubot from "hubot";
 import { Apis, Configuration } from "@traptitech/traq";
 
 export type CrowiInfo = {

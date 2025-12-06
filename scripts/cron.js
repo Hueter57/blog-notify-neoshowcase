@@ -3,14 +3,11 @@
 //
 // Commands:
 //
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.JapaneseDate = JapaneseDate;
 const init_1 = require("./init");
 const schedule_1 = require("./schedule");
-const node_cron_1 = __importDefault(require("node-cron"));
+const cron = require("node-cron");
 module.exports = (robot) => {
     let mainCron = startCron(robot);
     robot.hear(/cronStart$/i, async (res) => {
@@ -53,7 +50,7 @@ function startCron(robot) {
         console.log("blogRelay have already ended");
         return null;
     }
-    let mainCron = node_cron_1.default.schedule("0 0 8 * * *", async () => {
+    let mainCron = cron.schedule("0 0 8 * * *", async () => {
         const messages = await (0, schedule_1.getMessages)(crowi, blogRelay, noticeMessage);
         if (messages.length === 0) {
             return;
@@ -71,7 +68,7 @@ function startCron(robot) {
     else {
         const startDate = (0, schedule_1.dateOffset)(JapaneseDate(blogRelay.startDate), -5);
         startDate.setHours(0, 0, 0, 0);
-        node_cron_1.default.schedule(getCronScheduleString(startDate), () => {
+        cron.schedule(getCronScheduleString(startDate), () => {
             if (mainCron !== null) {
                 mainCron.start();
                 console.log("start cron");
@@ -90,7 +87,7 @@ function startCron(robot) {
     }
     const endDate = (0, schedule_1.dateOffset)(JapaneseDate(blogRelay.startDate), blogRelay.days);
     endDate.setHours(0, 0, 0, 0);
-    node_cron_1.default.schedule(getCronScheduleString(endDate), () => {
+    cron.schedule(getCronScheduleString(endDate), () => {
         if (mainCron !== null) {
             mainCron.stop();
             console.log("cron stop");

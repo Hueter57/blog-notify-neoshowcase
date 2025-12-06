@@ -5,7 +5,8 @@
   "main": "main.js",
   "scripts": {
     "start": "hubot -a hubot-traq -n \"$HUBOT_TRAQ_NAME\" \"$@\"",
-    "watch": "./node_modules/typescript/bin/tsc -w"
+    "watch": "./node_modules/typescript/bin/tsc -w",
+    "tsc": "find scripts/tsScripts -name '*.ts' | xargs npx tsc --target esnext --module commonjs --outDir scripts/"
   },
   "author": "Hueter",
   "license": "ISC",

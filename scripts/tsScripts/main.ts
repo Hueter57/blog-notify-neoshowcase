@@ -3,7 +3,7 @@
 // Commands:
 //
 
-import hubot from "hubot";
+import * as hubot from "hubot";
 import { checkEnvData } from "./init";
 
 module.exports = (robot: hubot.Robot): void => {

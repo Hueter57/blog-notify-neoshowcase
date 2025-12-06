@@ -3,10 +3,10 @@
 // Commands:
 //
 
-import hubot from "hubot";
+import * as hubot from "hubot";
 import { envData } from "./init";
 import { calcDateDiff, getMessages, dateOffset } from "./schedule";
-import cron from "node-cron";
+import * as cron from "node-cron";
 
 module.exports = (robot: hubot.Robot): void => {
   let mainCron = startCron(robot);
