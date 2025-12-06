@@ -4,9 +4,11 @@
 //
 
 import hubot from "hubot";
-import { checkEnvData } from "./init";
+import { checkEnvData, envData } from "./init";
 
 module.exports = (robot: hubot.Robot): void => {
+  robot.send({ channelID: envData.traQ.channelId },  "bot started");
+
   robot.respond(/ping$/i, async (res: hubot.Response): Promise<void> => {
     await res.reply("pong");
   });
