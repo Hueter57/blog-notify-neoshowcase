@@ -3,7 +3,7 @@
     "target": "ES2019",
     "module": "commonjs",
     "outDir": "./scripts/",
-    "rootDir": "./scripts/tsScripts",
+    "rootDir": "./scripts/",
     "strict": true,
     "esModuleInterop": true
   },
