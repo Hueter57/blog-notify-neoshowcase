@@ -3,9 +3,12 @@
 //
 // Commands:
 //
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getCrowiPageBody = getCrowiPageBody;
-const axios_1 = require("axios");
+const axios_1 = __importDefault(require("axios"));
 async function getCrowiPageBody({ host, pagePath, token, }) {
     const encodedPath = encodeURI(pagePath);
     const options = {
