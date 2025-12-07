@@ -85,9 +85,7 @@ function extractSchedule(pageBody: string): Schedule[] {
       date: cells[0] === "同上"
         ? table[table.length - 1].date
         : cells[0],
-      day: cells[1] === "同上"
-        ? table[table.length - 1].day
-        : parseInt(cells[1].match(/[0-9]+/)?.at(0) as string),
+      day: parseInt(cells[1]),
       writer: cells[2],
       summary: cells[3],
     };
