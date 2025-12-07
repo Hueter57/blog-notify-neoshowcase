@@ -61,5 +61,5 @@ typings/
 .DS_Store*
 .hubot_history
 
-/scripts/tsScripts/generated/prisma
+prisma/migrations/
 
