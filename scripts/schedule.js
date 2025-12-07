@@ -5,6 +5,7 @@
 //
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getMessages = getMessages;
+exports.getMainMessage = getMainMessage;
 exports.getLogMessage = getLogMessage;
 exports.calcDateDiff = calcDateDiff;
 exports.dateOffset = dateOffset;
@@ -14,7 +15,6 @@ const WRITER_REGEXP = /@[a-zA-Z0-9_-]+/g;
 async function getMessages(crowi, blogRelay, noticeMessage) {
     const pageBody = await (0, crowi_1.getCrowiPageBody)(crowi);
     if (pageBody === "") {
-        console.log("pageBody is empty");
         return [];
     }
     const schedules = extractSchedule(pageBody);
@@ -24,6 +24,18 @@ async function getMessages(crowi, blogRelay, noticeMessage) {
         : getDuringMessage(blogRelay.title, dateDiff, schedules);
     const logMessage = schedulesToCalendar(blogRelay, schedules);
     return [messageHead + noticeMessage, logMessage];
+}
+async function getMainMessage(crowi, blogRelay, noticeMessage) {
+    const pageBody = await (0, crowi_1.getCrowiPageBody)(crowi);
+    if (pageBody === "") {
+        return "";
+    }
+    const schedules = extractSchedule(pageBody);
+    const dateDiff = calcDateDiff(blogRelay);
+    const messageHead = dateDiff < 0
+        ? getBeforeMessage(blogRelay.title, -dateDiff)
+        : getDuringMessage(blogRelay.title, dateDiff, schedules);
+    return messageHead + noticeMessage;
 }
 async function getLogMessage(crowi, blogRelay) {
     const pageBody = await (0, crowi_1.getCrowiPageBody)(crowi);
@@ -46,7 +58,6 @@ function extractScheduleStr(pageBody) {
             break;
         }
     }
-    console.log("success extract schedule String");
     return table;
 }
 function extractSchedule(pageBody) {
@@ -62,21 +73,19 @@ function extractSchedule(pageBody) {
             .slice(1, -1)
             .map((c) => c.trim());
         const s = {
-            date: cells[0] === "同上"
-                ? table[table.length - 1].date
-                : cells[0],
-            day: cells[1] === "同上"
-                ? table[table.length - 1].day
-                : parseInt(cells[1].match(/[0-9]+/)?.at(0)),
+            date: cells[0],
+            day: parseInt(cells[1]),
             writer: cells[2],
             summary: cells[3],
         };
         if (s.writer.length === 0) {
             continue;
         }
+        if (s.date === "同上") {
+            s.date = table[table.length - 1].date;
+        }
         table.push(s);
     }
-    console.log("success extract schedule");
     return table;
 }
 // START_DATEとの差分を取得する

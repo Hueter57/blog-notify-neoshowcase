@@ -30,9 +30,8 @@ export async function getCrowiPageBody({
   await axios(options)
     .then((res: AxiosResponse<CrowiGetPageResponse>) => {
       const { data, status } = res;
-      console.log("axios status:" + status);
+      console.log("status:" + status);
       if (data.ok) {
-        console.log("data.ok is true");
         body = data.page.revision.body as string;
       } else {
         console.log("data.ok is false");

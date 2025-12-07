@@ -42,7 +42,6 @@ module.exports = (robot: hubot.Robot): void => {
 
 function startCron(robot: hubot.Robot): cron.ScheduledTask | null {
   if (envData.validData === undefined || !envData.validData) {
-    console.log("env data is invalid");
     return null;
   }
   const { crowi, blogRelay, noticeMessage } = envData;
@@ -51,13 +50,11 @@ function startCron(robot: hubot.Robot): cron.ScheduledTask | null {
     console.log("blogRelay have already ended");
     return null;
   }
-
   let mainCron = cron.schedule(
     "0 0 8 * * *",
     async () => {
       const messages = await getMessages(crowi, blogRelay, noticeMessage);
       if (messages.length === 0) {
-        console.log("can not get messages");
         return;
       }
       console.log(messages);
@@ -69,7 +66,6 @@ function startCron(robot: hubot.Robot): cron.ScheduledTask | null {
       timezone: "Asia/Tokyo",
     }
   );
-  
   if (dateDiff > -5) {
     console.log("start cron");
   } else {
