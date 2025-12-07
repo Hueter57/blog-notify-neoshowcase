@@ -19,8 +19,9 @@ async function getCrowiPageBody({ host, pagePath, token, }) {
     await (0, axios_1.default)(options)
         .then((res) => {
         const { data, status } = res;
-        console.log("status:" + status);
+        console.log("axios status:" + status);
         if (data.ok) {
+            console.log("data.ok is true");
             body = data.page.revision.body;
         }
         else {

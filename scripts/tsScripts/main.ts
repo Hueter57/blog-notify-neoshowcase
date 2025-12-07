@@ -33,4 +33,6 @@ ${envStatusMessage}`;
 - \`changeEnv <key>,<value>\`: 環境変数の変更 (例: \`changeEnv TITLE,新しいタイトル\`)
     - <key> \`TITLE\`, \`TAG\`, \`START_DATE\`, \`BLOG_DAYS\`, \`TRAQ_CHANNEL_ID\`, \`TRAQ_LOG_CHANNEL_ID\`, \`TRAQ_LOG_CHANNEL_PATH\`, \`TRAQ_REVIEW_CHANNEL_PATH\`, \`CROWI_PAGE_PATH\``);
   });
+
+  
 };

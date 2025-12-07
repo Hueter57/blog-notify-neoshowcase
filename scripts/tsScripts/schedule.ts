@@ -16,8 +16,10 @@ export async function getMessages(
 ): Promise<string[]> {
   const pageBody = await getCrowiPageBody(crowi);
   if (pageBody === "") {
+    console.log("pageBody is empty");
     return [];
   }
+
   const schedules = extractSchedule(pageBody);
   const dateDiff = calcDateDiff(blogRelay);
   const messageHead =
@@ -28,23 +30,6 @@ export async function getMessages(
   return [messageHead + noticeMessage, logMessage];
 }
 
-export async function getMainMessage(
-  crowi: CrowiInfo,
-  blogRelay: BlogRelayInfo,
-  noticeMessage: string
-): Promise<string> {
-  const pageBody = await getCrowiPageBody(crowi);
-  if (pageBody === "") {
-    return "";
-  }
-  const schedules = extractSchedule(pageBody);
-  const dateDiff = calcDateDiff(blogRelay);
-  const messageHead =
-    dateDiff < 0
-      ? getBeforeMessage(blogRelay.title, -dateDiff)
-      : getDuringMessage(blogRelay.title, dateDiff, schedules);
-  return messageHead + noticeMessage;
-}
 
 export async function getLogMessage(
   crowi: CrowiInfo,
@@ -79,6 +64,7 @@ function extractScheduleStr(pageBody: string): string {
       break;
     }
   }
+  console.log("success extract schedule String");
   return table;
 }
 
@@ -94,20 +80,23 @@ function extractSchedule(pageBody: string): Schedule[] {
       .split("|")
       .slice(1, -1)
       .map((c: string): string => c.trim());
+
     const s: Schedule = {
-      date: cells[0],
-      day: parseInt(cells[1]),
+      date: cells[0] === "同上"
+        ? table[table.length - 1].date
+        : cells[0],
+      day: cells[1] === "同上"
+        ? table[table.length - 1].day
+        : parseInt(cells[1].match(/[0-9]+/)?.at(0) as string),
       writer: cells[2],
       summary: cells[3],
     };
     if (s.writer.length === 0) {
       continue;
     }
-    if (s.date === "同上") {
-      s.date = table[table.length - 1].date;
-    }
     table.push(s);
   }
+  console.log("success extract schedule");
   return table;
 }
 
