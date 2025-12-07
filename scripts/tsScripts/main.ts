@@ -29,6 +29,7 @@ ${envStatusMessage}`;
     await res.reply(`コマンド一覧\n
 - \`ping\`: BOTの稼働確認\n
 - \`help\`: ヘルプを表示\n
+- \`preview\`: 今日表示するメッセージとログをBOTを呼んだ場所にコードブロックに埋め込んで出力\n
 - \`checkEnvData\`: 環境変数の確認\n
 - \`cronStart\`: cronの開始 (環境変数変更後一度\`checkEnvData\`の実行が必要)\n
 - \`cronStop\`: cronの停止
