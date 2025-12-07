@@ -1,12 +1,14 @@
-# Dockerfile for Hubot
-FROM node:22
+FROM node:22-alpine
 
 WORKDIR /app
-COPY . .
+COPY package*.json ./
 RUN npm install
-RUN npx prisma migrate dev --name init
+
+COPY . .
 RUN npx prisma generate
 
+
 EXPOSE 8080
+RUN npx prisma migrate deploy
 
 CMD ["npm", "start"]
