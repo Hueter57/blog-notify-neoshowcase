@@ -30,6 +30,8 @@ async function CreateBlogSchedule(sData) {
             blogDays: sData.blogDays,
         },
     });
+    console.log(schedule);
+    return schedule;
 }
 // admin
 async function getAdminList() {
@@ -39,6 +41,7 @@ async function getAdminList() {
             userid: true,
         },
     });
+    console.log(`get ${admins.length} admins.`);
     return admins;
 }
 async function createAdmin(userid) {

@@ -39,7 +39,7 @@ module.exports = (robot: hubot.Robot): void => {
       console.log(`Admin created: id=${admin.id}, userid=${admin.userid}`);
       res.send(`Admin created: id=${admin.id}, userid=${admin.userid}`);
     }).catch((err: Error) => {
-      console.error(err);
+      console.error("createAdmin error: " + err);
       res.send("Error creating admin.");
     });
   });
@@ -49,6 +49,7 @@ module.exports = (robot: hubot.Robot): void => {
 async function ScheduleList(): Promise<string> {
   await DB.getScheduleList()
     .then((schedules: DB.ScheduleOverview[]) => {
+      console.log(`get ${schedules.length} schedules.`);
       if (schedules.length === 0) {
         return "No schedules found.";
       }
@@ -58,7 +59,7 @@ async function ScheduleList(): Promise<string> {
       }).join('\n');
       return message;
     }).catch((err: Error) => {
-      console.error(err);
+      console.error("getScheduleList error: " + err);
       return "Error retrieving schedules.";
     })
   return "";
@@ -68,6 +69,7 @@ async function ScheduleList(): Promise<string> {
 async function AdminList(): Promise<string> {
   await DB.getAdminList()
     .then((admins: DB.Admin[]) => {
+      console.log(`get ${admins.length} admins.`);
       if (admins.length === 0) {
         return "No admins found.";
       }
@@ -77,7 +79,7 @@ async function AdminList(): Promise<string> {
       }).join('\n');
       return message;
     }).catch((err: Error) => {
-      console.error(err);
+      console.error("getAdminList error: " + err);
       return "Error retrieving admins.";
     })
   return "";

@@ -70,7 +70,7 @@ module.exports = (robot) => {
             console.log(`Admin created: id=${admin.id}, userid=${admin.userid}`);
             res.send(`Admin created: id=${admin.id}, userid=${admin.userid}`);
         }).catch((err) => {
-            console.error(err);
+            console.error("createAdmin error: " + err);
             res.send("Error creating admin.");
         });
     });
@@ -78,6 +78,7 @@ module.exports = (robot) => {
 async function ScheduleList() {
     await DB.getScheduleList()
         .then((schedules) => {
+        console.log(`get ${schedules.length} schedules.`);
         if (schedules.length === 0) {
             return "No schedules found.";
         }
@@ -87,7 +88,7 @@ async function ScheduleList() {
         }).join('\n');
         return message;
     }).catch((err) => {
-        console.error(err);
+        console.error("getScheduleList error: " + err);
         return "Error retrieving schedules.";
     });
     return "";
@@ -95,6 +96,7 @@ async function ScheduleList() {
 async function AdminList() {
     await DB.getAdminList()
         .then((admins) => {
+        console.log(`get ${admins.length} admins.`);
         if (admins.length === 0) {
             return "No admins found.";
         }
@@ -104,7 +106,7 @@ async function AdminList() {
         }).join('\n');
         return message;
     }).catch((err) => {
-        console.error(err);
+        console.error("getAdminList error: " + err);
         return "Error retrieving admins.";
     });
     return "";

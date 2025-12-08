@@ -1,10 +1,24 @@
 import 'dotenv/config'
 import { prisma } from './prisma';
+import { schedule } from 'node-cron';
 
 
 export type ScheduleOverview = {
   id: number;
   title: string;
+};
+
+export type Schedule = {
+  id: number;
+  status: string;
+  crowiPath: string;
+  channelId: string;
+  logChannelId: string;
+  reviewChannelId: string;
+  title: string;
+  Tag: string;
+  startDate: Date;
+  blogDays: number;
 };
 
 export type CreateScheduleData = {
@@ -36,8 +50,8 @@ export async function getScheduleList(): Promise<ScheduleOverview[]> {
   return schedules
 }
 
-export async function CreateBlogSchedule(sData: CreateScheduleData) {
-  const schedule = await prisma.schedule.create({
+export async function CreateBlogSchedule(sData: CreateScheduleData): Promise<Schedule> {
+  const schedule: Schedule = await prisma.schedule.create({
     data: {
       status: 'unChecked',
       crowiPath: sData.crowiPath,
@@ -50,6 +64,8 @@ export async function CreateBlogSchedule(sData: CreateScheduleData) {
       blogDays: sData.blogDays,
     },
   });
+  console.log(schedule);
+  return schedule;
 }
 
 
@@ -57,12 +73,13 @@ export async function CreateBlogSchedule(sData: CreateScheduleData) {
 // admin
 
 export async function getAdminList(): Promise<Admin[]> {
-  const admins = await prisma.admin.findMany({
+  const admins: Admin[] = await prisma.admin.findMany({
     select: {
       id: true,
       userid: true,
     },
   });
+  console.log(`get ${admins.length} admins.`);
   return admins
 }
 
