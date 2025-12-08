@@ -43,24 +43,31 @@ module.exports = (robot) => {
     robot.respond(/List (.+)$/i, async (res) => {
         const item = res.match[1];
         if (item.toLowerCase() === "schedules") {
+            console.log("Listing schedules...");
             const message = await ScheduleList();
+            console.log(message);
             res.send(message);
         }
         else if (item.toLowerCase() === "admins") {
+            console.log("Listing admins...");
             const message = await AdminList();
+            console.log(message);
             res.send(message);
         }
         else {
+            console.log(`Unknown list item: ${item}`);
             res.send(`I don't know how to list ${item}.`);
         }
     });
     robot.respond(/createAdmin (.+)/i, async (res) => {
         const userid = res.match[1];
         if (!traQidRegex.test(userid)) {
+            console.log(`Invalid userid format: ${userid}`);
             res.send("Please provide a valid userid.");
             return;
         }
         DB.createAdmin(userid).then((admin) => {
+            console.log(`Admin created: id=${admin.id}, userid=${admin.userid}`);
             res.send(`Admin created: id=${admin.id}, userid=${admin.userid}`);
         }).catch((err) => {
             console.error(err);
