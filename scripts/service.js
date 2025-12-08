@@ -37,7 +37,7 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-const DB = __importStar(require("./db"));
+const DB = __importStar(require("./lib/db"));
 const traQidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 module.exports = (robot) => {
     robot.respond(/List (.+)$/i, async (res) => {

@@ -4,7 +4,7 @@
 //
 
 import * as hubot from "hubot";
-import * as DB from "./db";
+import * as DB from "./lib/db";
 
 const traQidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
