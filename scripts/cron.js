@@ -38,8 +38,8 @@ var __importStar = (this && this.__importStar) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.JapaneseDate = JapaneseDate;
-const init_1 = require("./init");
-const schedule_1 = require("./schedule");
+const init_1 = require("./lib/init");
+const schedule_1 = require("./lib/schedule");
 const cron = __importStar(require("node-cron"));
 module.exports = (robot) => {
     let mainCron = startCron(robot);

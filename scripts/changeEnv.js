@@ -4,7 +4,7 @@
 // Commands:
 //
 Object.defineProperty(exports, "__esModule", { value: true });
-const init_1 = require("./init");
+const init_1 = require("./lib/init");
 module.exports = (robot) => {
     robot.respond(/changeEnv ([^,]+),([^,]+)$/i, async (res) => {
         let envName = res.match[1];

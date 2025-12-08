@@ -4,8 +4,8 @@
 //
 
 import * as hubot from "hubot";
-import { envData } from "./init";
-import { calcDateDiff, getMessages, dateOffset } from "./schedule";
+import { envData } from "./lib/init";
+import { calcDateDiff, getMessages, dateOffset } from "./lib/schedule";
 import * as cron from "node-cron";
 
 module.exports = (robot: hubot.Robot): void => {
