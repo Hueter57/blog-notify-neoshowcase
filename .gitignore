@@ -62,4 +62,5 @@ typings/
 .hubot_history
 
 /scripts/tsScripts/prisma
+/scripts/prisma
 

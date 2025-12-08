@@ -21,10 +21,12 @@
   "homepage": "https://github.com/Hueter57/blog-notify-neoshowcase#readme",
   "keywords": [],
   "dependencies": {
+    "@prisma/adapter-mariadb": "^7.1.0",
     "@prisma/client": "^7.1.0",
     "@traptitech/traq": "^3.22.0-4",
     "@types/node-cron": "^3.0.11",
     "axios": "^1.8.2",
+    "dotenv": "^17.2.3",
     "hubot": "^13.1.4",
     "hubot-traq": "^2.0.0",
     "node-cron": "^3.0.3"
