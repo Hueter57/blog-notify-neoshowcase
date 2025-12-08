@@ -5,6 +5,8 @@
   "main": "scripts/main.js",
   "scripts": {
     "start": "hubot -a hubot-traq -n \"$HUBOT_TRAQ_NAME\" \"$@\"",
+    "build": "tsc",
+    "postinstall": "prisma generate",
     "watch": "./node_modules/typescript/bin/tsc -w"
   },
   "author": "Hueter",
