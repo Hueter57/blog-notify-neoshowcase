@@ -2,7 +2,7 @@
   "name": "blog-notify-neoshowcase",
   "version": "1.0.0",
   "description": "blog-notify running on neoshowcase",
-  "main": "main.js",
+  "main": "scripts/main.js",
   "scripts": {
     "start": "hubot -a hubot-traq -n \"$HUBOT_TRAQ_NAME\" \"$@\"",
     "watch": "./node_modules/typescript/bin/tsc -w"
