@@ -1,7 +1,6 @@
 import 'dotenv/config'
-import { PrismaClient } from '@prisma/client'
+import { prisma } from './prisma';
 
-const prisma = new PrismaClient()
 
 export type ScheduleOverview = {
   id: number;

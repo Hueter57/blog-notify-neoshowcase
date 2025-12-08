@@ -5,11 +5,10 @@ exports.CreateBlogSchedule = CreateBlogSchedule;
 exports.getAdminList = getAdminList;
 exports.createAdmin = createAdmin;
 require("dotenv/config");
-const client_1 = require("@prisma/client");
-const prisma = new client_1.PrismaClient();
+const prisma_1 = require("./prisma");
 // schedule
 async function getScheduleList() {
-    const schedules = await prisma.schedule.findMany({
+    const schedules = await prisma_1.prisma.schedule.findMany({
         select: {
             id: true,
             title: true,
@@ -18,7 +17,7 @@ async function getScheduleList() {
     return schedules;
 }
 async function CreateBlogSchedule(sData) {
-    const schedule = await prisma.schedule.create({
+    const schedule = await prisma_1.prisma.schedule.create({
         data: {
             status: 'unChecked',
             crowiPath: sData.crowiPath,
@@ -34,7 +33,7 @@ async function CreateBlogSchedule(sData) {
 }
 // admin
 async function getAdminList() {
-    const admins = await prisma.admin.findMany({
+    const admins = await prisma_1.prisma.admin.findMany({
         select: {
             id: true,
             userid: true,
@@ -43,7 +42,7 @@ async function getAdminList() {
     return admins;
 }
 async function createAdmin(userid) {
-    const admin = await prisma.admin.create({
+    const admin = await prisma_1.prisma.admin.create({
         data: {
             userid: userid,
         },
