@@ -15,13 +15,13 @@ module.exports = (robot: hubot.Robot): void => {
     if (item.toLowerCase() === "schedules") {
       console.log("Listing schedules...");
       const message = await ScheduleList();
-      console.log(message);
       res.send(message);
+      console.log("send Schedule list");
     } else if (item.toLowerCase() === "admins") {
       console.log("Listing admins...");
       const message = await AdminList();
-      console.log(message);
       res.send(message);
+      console.log("send Admin list");
     } else {
       console.log(`Unknown list item: ${item}`);
       res.send(`I don't know how to list ${item}.`);
@@ -76,11 +76,16 @@ async function AdminList(): Promise<string> {
         return "No admins found.";
       }
       message = "| id | userName |\n|---|---|\n";
-      message += admins.map(async (admin: DB.Admin) => {
+      Promise.all(admins.map(async (admin: DB.Admin): Promise<string> => {
         let userName: string = await traqAPI.getUserName(admin.userid);
         return `| ${admin.id} | ${userName} |`;
-      }).join('\n');
-      console.log("created admin list:\n" + message);
+      })).then((rows: string[]) => {
+        message += rows.join('\n');
+        console.log("created admin list:\n" + message);
+      }).catch((err: Error) => {
+        console.error("getAdminList error: " + err);
+        return "Error processing admin list.";
+      });
     }).catch((err: Error) => {
       console.error("getAdminList error: " + err);
       return "Error retrieving admins.";

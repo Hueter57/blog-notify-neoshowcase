@@ -46,14 +46,14 @@ module.exports = (robot) => {
         if (item.toLowerCase() === "schedules") {
             console.log("Listing schedules...");
             const message = await ScheduleList();
-            console.log(message);
             res.send(message);
+            console.log("send Schedule list");
         }
         else if (item.toLowerCase() === "admins") {
             console.log("Listing admins...");
             const message = await AdminList();
-            console.log(message);
             res.send(message);
+            console.log("send Admin list");
         }
         else {
             console.log(`Unknown list item: ${item}`);
@@ -103,11 +103,16 @@ async function AdminList() {
             return "No admins found.";
         }
         message = "| id | userName |\n|---|---|\n";
-        message += admins.map(async (admin) => {
+        Promise.all(admins.map(async (admin) => {
             let userName = await traqAPI.getUserName(admin.userid);
             return `| ${admin.id} | ${userName} |`;
-        }).join('\n');
-        console.log("created admin list:\n" + message);
+        })).then((rows) => {
+            message += rows.join('\n');
+            console.log("created admin list:\n" + message);
+        }).catch((err) => {
+            console.error("getAdminList error: " + err);
+            return "Error processing admin list.";
+        });
     }).catch((err) => {
         console.error("getAdminList error: " + err);
         return "Error retrieving admins.";
