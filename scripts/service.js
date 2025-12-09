@@ -45,16 +45,14 @@ module.exports = (robot) => {
         const item = res.match[1];
         if (item.toLowerCase() === "schedules") {
             console.log("Listing schedules...");
-            await ScheduleList().then((message) => {
-                res.send(message);
-            });
+            const message = await ScheduleList();
+            res.send(message);
             console.log("send Schedule list");
         }
         else if (item.toLowerCase() === "admins") {
             console.log("Listing admins...");
-            await AdminList().then((message) => {
-                res.send(message);
-            });
+            const message = await AdminList();
+            res.send(message);
             console.log("send Admin list");
         }
         else {
