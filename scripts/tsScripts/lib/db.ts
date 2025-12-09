@@ -14,9 +14,8 @@ export type Schedule = {
   crowiPath: string;
   channelId: string;
   logChannelId: string;
-  reviewChannelId: string;
   title: string;
-  Tag: string;
+  tag: string;
   startDate: Date;
   blogDays: number;
 };
@@ -27,7 +26,7 @@ export type CreateScheduleData = {
   logChannelId: string;
   reviewChannelId: string;
   title: string;
-  Tag: string;
+  tag: string;
   startDate: Date;
   blogDays: number;
 };
@@ -50,6 +49,15 @@ export async function getScheduleList(): Promise<ScheduleOverview[]> {
   return schedules
 }
 
+export async function getScheduleById(scheduleId: number): Promise<Schedule | null> {
+  const schedule: Schedule | null = await prisma.schedule.findUnique({
+    where: {
+      id: scheduleId,
+    },
+  });
+  return schedule;
+}
+
 export async function CreateBlogSchedule(sData: CreateScheduleData): Promise<Schedule> {
   const schedule: Schedule = await prisma.schedule.create({
     data: {
@@ -57,9 +65,8 @@ export async function CreateBlogSchedule(sData: CreateScheduleData): Promise<Sch
       crowiPath: sData.crowiPath,
       channelId: sData.channelId,
       logChannelId: sData.logChannelId,
-      reviewChannelId: sData.reviewChannelId,
       title: sData.title,
-      Tag: sData.Tag,
+      tag: sData.tag,
       startDate: sData.startDate,
       blogDays: sData.blogDays,
     },

@@ -13,19 +13,17 @@ datasource db {
   provider = "mysql"
 }
 
-
 model Schedule {
-  id              Int      @id @default(autoincrement())
-  status          String
-  crowiPath       String
-  channelId       String
-  logChannelId    String
-  reviewChannelId String
-  title           String
-  Tag             String
-  startDate       DateTime
-  blogDays        Int
-  createdAt       DateTime @default(now())
+  id            Int      @id @default(autoincrement())
+  status        String
+  crowiPath     String
+  channelId     String
+  logChannelId  String
+  title         String
+  tag           String
+  startDate     DateTime
+  blogDays      Int
+  createdAt     DateTime @default(now())
 }
 
 model Admin {
