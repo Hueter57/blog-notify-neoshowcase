@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getScheduleList = getScheduleList;
-exports.getScheduleById = getScheduleById;
 exports.CreateBlogSchedule = CreateBlogSchedule;
 exports.getAdminList = getAdminList;
 exports.createAdmin = createAdmin;
@@ -17,14 +16,6 @@ async function getScheduleList() {
     });
     return schedules;
 }
-async function getScheduleById(scheduleId) {
-    const schedule = await prisma_1.prisma.schedule.findUnique({
-        where: {
-            id: scheduleId,
-        },
-    });
-    return schedule;
-}
 async function CreateBlogSchedule(sData) {
     const schedule = await prisma_1.prisma.schedule.create({
         data: {
@@ -32,8 +23,9 @@ async function CreateBlogSchedule(sData) {
             crowiPath: sData.crowiPath,
             channelId: sData.channelId,
             logChannelId: sData.logChannelId,
+            reviewChannelId: sData.reviewChannelId,
             title: sData.title,
-            tag: sData.tag,
+            Tag: sData.Tag,
             startDate: sData.startDate,
             blogDays: sData.blogDays,
         },
