@@ -47,40 +47,43 @@ module.exports = (robot: hubot.Robot): void => {
 
 
 async function ScheduleList(): Promise<string> {
+  let message: string = "";
   await DB.getScheduleList()
     .then((schedules: DB.ScheduleOverview[]) => {
       console.log(`get ${schedules.length} schedules.`);
       if (schedules.length === 0) {
         return "No schedules found.";
       }
-      let message = "| id | title |\n|---|---|\n";
+      message = "| id | title |\n|---|---|\n";
       message += schedules.map((schedule: DB.ScheduleOverview) => {
         return `| ${schedule.id} | ${schedule.title} |`;
       }).join('\n');
+      console.log("created schedule list:\n" + message);
       return message;
     }).catch((err: Error) => {
       console.error("getScheduleList error: " + err);
       return "Error retrieving schedules.";
     })
-  return "";
+  return message;
 }
 
 
 async function AdminList(): Promise<string> {
+  let message: string = "";
   await DB.getAdminList()
     .then((admins: DB.Admin[]) => {
       console.log(`get ${admins.length} admins.`);
       if (admins.length === 0) {
         return "No admins found.";
       }
-      let message = "| id | userid |\n|---|---|\n";
+      message = "| id | userid |\n|---|---|\n";
       message += admins.map((admin: DB.Admin) => {
         return `| ${admin.id} | ${admin.userid} |`;
       }).join('\n');
-      return message;
+      console.log("created admin list:\n" + message);
     }).catch((err: Error) => {
       console.error("getAdminList error: " + err);
       return "Error retrieving admins.";
-    })
-  return "";
+    });
+  return message;
 }

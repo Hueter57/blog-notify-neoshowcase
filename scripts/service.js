@@ -76,38 +76,41 @@ module.exports = (robot) => {
     });
 };
 async function ScheduleList() {
+    let message = "";
     await DB.getScheduleList()
         .then((schedules) => {
         console.log(`get ${schedules.length} schedules.`);
         if (schedules.length === 0) {
             return "No schedules found.";
         }
-        let message = "| id | title |\n|---|---|\n";
+        message = "| id | title |\n|---|---|\n";
         message += schedules.map((schedule) => {
             return `| ${schedule.id} | ${schedule.title} |`;
         }).join('\n');
+        console.log("created schedule list:\n" + message);
         return message;
     }).catch((err) => {
         console.error("getScheduleList error: " + err);
         return "Error retrieving schedules.";
     });
-    return "";
+    return message;
 }
 async function AdminList() {
+    let message = "";
     await DB.getAdminList()
         .then((admins) => {
         console.log(`get ${admins.length} admins.`);
         if (admins.length === 0) {
             return "No admins found.";
         }
-        let message = "| id | userid |\n|---|---|\n";
+        message = "| id | userid |\n|---|---|\n";
         message += admins.map((admin) => {
             return `| ${admin.id} | ${admin.userid} |`;
         }).join('\n');
-        return message;
+        console.log("created admin list:\n" + message);
     }).catch((err) => {
         console.error("getAdminList error: " + err);
         return "Error retrieving admins.";
     });
-    return "";
+    return message;
 }
