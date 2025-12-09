@@ -14,13 +14,15 @@ module.exports = (robot: hubot.Robot): void => {
     const item = res.match[1];
     if (item.toLowerCase() === "schedules") {
       console.log("Listing schedules...");
-      const message = await ScheduleList();
-      res.send(message);
+      await ScheduleList().then((message: string) => {
+        res.send(message);
+      });
       console.log("send Schedule list");
     } else if (item.toLowerCase() === "admins") {
       console.log("Listing admins...");
-      const message = await AdminList();
-      res.send(message);
+      await AdminList().then((message: string) => {
+        res.send(message);
+      });
       console.log("send Admin list");
     } else {
       console.log(`Unknown list item: ${item}`);
