@@ -5,7 +5,8 @@
   "main": "scripts/main.js",
   "scripts": {
     "start": "npx prisma migrate deploy && hubot -a hubot-traq -n \"$HUBOT_TRAQ_NAME\" \"$@\"",
-    "build": "prisma generate && tsc",
+    "postinstall": "prisma generate",
+    "build": "tsc",
     "watch": "./node_modules/typescript/bin/tsc -w"
   },
   "author": "Hueter",
