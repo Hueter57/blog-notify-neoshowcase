@@ -38,6 +38,7 @@ var __importStar = (this && this.__importStar) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 const DB = __importStar(require("./lib/db"));
+const traqAPI = __importStar(require("./lib/traq"));
 const traQidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 module.exports = (robot) => {
     robot.respond(/List (.+)$/i, async (res) => {
@@ -79,7 +80,6 @@ async function ScheduleList() {
     let message = "";
     await DB.getScheduleList()
         .then((schedules) => {
-        console.log(`get ${schedules.length} schedules.`);
         if (schedules.length === 0) {
             return "No schedules found.";
         }
@@ -99,13 +99,13 @@ async function AdminList() {
     let message = "";
     await DB.getAdminList()
         .then((admins) => {
-        console.log(`get ${admins.length} admins.`);
         if (admins.length === 0) {
             return "No admins found.";
         }
-        message = "| id | userid |\n|---|---|\n";
-        message += admins.map((admin) => {
-            return `| ${admin.id} | ${admin.userid} |`;
+        message = "| id | userName |\n|---|---|\n";
+        message += admins.map(async (admin) => {
+            let userName = await traqAPI.getUserName(admin.userid);
+            return `| ${admin.id} | ${userName} |`;
         }).join('\n');
         console.log("created admin list:\n" + message);
     }).catch((err) => {

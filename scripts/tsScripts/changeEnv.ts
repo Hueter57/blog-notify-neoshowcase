@@ -4,7 +4,8 @@
 //
 
 import * as hubot from "hubot";
-import { getChannelName, envData } from "./lib/init";
+import {envData } from "./lib/init";
+import { getChannelName } from "./lib/traq";
 
 module.exports = (robot: hubot.Robot): void => {
   robot.respond(/changeEnv ([^,]+),([^,]+)$/i, async (res: hubot.Response): Promise<void> => {

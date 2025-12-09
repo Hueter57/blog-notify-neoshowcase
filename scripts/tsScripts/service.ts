@@ -5,6 +5,7 @@
 
 import * as hubot from "hubot";
 import * as DB from "./lib/db";
+import * as traqAPI from "./lib/traq";
 
 const traQidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
@@ -50,7 +51,6 @@ async function ScheduleList(): Promise<string> {
   let message: string = "";
   await DB.getScheduleList()
     .then((schedules: DB.ScheduleOverview[]) => {
-      console.log(`get ${schedules.length} schedules.`);
       if (schedules.length === 0) {
         return "No schedules found.";
       }
@@ -72,13 +72,13 @@ async function AdminList(): Promise<string> {
   let message: string = "";
   await DB.getAdminList()
     .then((admins: DB.Admin[]) => {
-      console.log(`get ${admins.length} admins.`);
       if (admins.length === 0) {
         return "No admins found.";
       }
-      message = "| id | userid |\n|---|---|\n";
-      message += admins.map((admin: DB.Admin) => {
-        return `| ${admin.id} | ${admin.userid} |`;
+      message = "| id | userName |\n|---|---|\n";
+      message += admins.map(async (admin: DB.Admin) => {
+        let userName: string = await traqAPI.getUserName(admin.userid);
+        return `| ${admin.id} | ${userName} |`;
       }).join('\n');
       console.log("created admin list:\n" + message);
     }).catch((err: Error) => {

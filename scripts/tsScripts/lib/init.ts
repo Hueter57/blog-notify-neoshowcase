@@ -3,7 +3,7 @@
 // Commands:
 //
 
-import { Apis, Configuration } from "@traptitech/traq";
+import * as traqAPI from "./traq";
 
 export type CrowiInfo = {
   host: string;
@@ -140,14 +140,14 @@ export async function checkEnvData(): Promise<string[][]> {
     envStatus.push(["TRAQ_CHANNEL_ID", "undefined"]);
     envData.validData = false;
   } else {
-    const channelName = await getChannelName(traQ.channelId);
+    const channelName = await traqAPI.getChannelName(traQ.channelId);
     envStatus.push(["TRAQ_CHANNEL_ID", channelName]);
   }
   if (traQ.logChannelId === "") {
     envStatus.push(["TRAQ_LOG_CHANNEL_ID", "undefined"]);
     envData.validData = false;
   } else {
-    const logChannelName = await getChannelName(traQ.logChannelId);
+    const logChannelName = await traqAPI.getChannelName(traQ.logChannelId);
     envStatus.push(["TRAQ_LOG_CHANNEL_ID", logChannelName]);
   }
   if (traQ.logChannelPath === "") {
@@ -188,31 +188,4 @@ export async function checkEnvData(): Promise<string[][]> {
     envStatus.push(["BLOG_DAYS", blogRelay.days.toString()]);
   }
   return envStatus;
-}
-
-export async function getChannelName(channelid: string): Promise<string> {
-  let name: string[] = [];
-  const traqApi = new Apis(
-    new Configuration({
-      accessToken: envData.traQ.traqBotToken,
-    })
-  );
-  try {
-    for (let i = 0; i < 5; i++) {
-      const response = await traqApi.getChannel(channelid);
-      name.unshift(response.data.name);
-      if (response.statusText !== "OK") {
-        return response.statusText;
-      }
-      if (response.data.parentId === null) {
-        break;
-      } else {
-        channelid = response.data.parentId;
-      }
-    }
-    return `#${name.join("/")}`;
-  } catch (error) {
-    console.error(error);
-    return `Error: ${error}`;
-  }
 }
