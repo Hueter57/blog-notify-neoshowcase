@@ -39,11 +39,12 @@ export async function getUserName(userid: string): Promise<string> {
   try {
     const response = await traqApi.getUser(userid);
     if (response.statusText !== "OK") {
+      console.log("getUserName error: " + response.statusText);
       return response.statusText;
     }
     return response.data.name;
   } catch (error) {
-    console.error(error);
+    console.error("getUserName error: " + error);
     return `Error: ${error}`;
   }
 }

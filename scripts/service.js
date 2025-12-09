@@ -96,26 +96,16 @@ async function ScheduleList() {
     return message;
 }
 async function AdminList() {
-    let message = "";
-    await DB.getAdminList()
-        .then((admins) => {
-        if (admins.length === 0) {
-            return "No admins found.";
-        }
-        message = "| id | userName |\n|---|---|\n";
-        Promise.all(admins.map(async (admin) => {
-            let userName = await traqAPI.getUserName(admin.userid);
-            return `| ${admin.id} | ${userName} |`;
-        })).then((rows) => {
-            message += rows.join('\n');
-            console.log("created admin list:\n" + message);
-        }).catch((err) => {
-            console.error("getAdminList error: " + err);
-            return "Error processing admin list.";
-        });
-    }).catch((err) => {
-        console.error("getAdminList error: " + err);
-        return "Error retrieving admins.";
-    });
+    const admins = await DB.getAdminList();
+    if (admins.length === 0) {
+        return "No admins found.";
+    }
+    let message = "| id | userName |\n|---|---|\n";
+    const rows = await Promise.all(admins.map(async (admin) => {
+        let userName = await traqAPI.getUserName(admin.userid);
+        return `| ${admin.id} | ${userName} |`;
+    }));
+    message += rows.join('\n');
+    console.log("created admin list:\n" + message);
     return message;
 }

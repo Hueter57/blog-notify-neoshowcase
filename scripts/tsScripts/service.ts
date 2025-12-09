@@ -69,26 +69,16 @@ async function ScheduleList(): Promise<string> {
 
 
 async function AdminList(): Promise<string> {
-  let message: string = "";
-  await DB.getAdminList()
-    .then((admins: DB.Admin[]) => {
-      if (admins.length === 0) {
-        return "No admins found.";
-      }
-      message = "| id | userName |\n|---|---|\n";
-      Promise.all(admins.map(async (admin: DB.Admin): Promise<string> => {
-        let userName: string = await traqAPI.getUserName(admin.userid);
-        return `| ${admin.id} | ${userName} |`;
-      })).then((rows: string[]) => {
-        message += rows.join('\n');
-        console.log("created admin list:\n" + message);
-      }).catch((err: Error) => {
-        console.error("getAdminList error: " + err);
-        return "Error processing admin list.";
-      });
-    }).catch((err: Error) => {
-      console.error("getAdminList error: " + err);
-      return "Error retrieving admins.";
-    });
+  const admins: DB.Admin[] = await DB.getAdminList();
+  if (admins.length === 0) {
+    return "No admins found.";
+  }
+  let message: string = "| id | userName |\n|---|---|\n";
+  const rows: string[] = await Promise.all(admins.map(async (admin: DB.Admin): Promise<string> => {
+    let userName: string = await traqAPI.getUserName(admin.userid);
+    return `| ${admin.id} | ${userName} |`;
+  }));
+  message += rows.join('\n');
+  console.log("created admin list:\n" + message);
   return message;
 }
