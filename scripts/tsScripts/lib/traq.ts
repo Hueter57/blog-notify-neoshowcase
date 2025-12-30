@@ -4,14 +4,16 @@
 //
 
 import { Apis, Configuration } from "@traptitech/traq";
-import { envData } from "./init";
-import { error } from "console";
 
-const traqApi = new Apis(
-  new Configuration({
-    accessToken: envData.traQ.traqBotToken,
-  })
-);
+let traqApi: Apis;
+
+export function setTraQApi(traqBotToken: string): void {
+  traqApi = new Apis(
+    new Configuration({
+      accessToken: traqBotToken,
+    })
+  );
+}
 
 export async function getChannelName(channelid: string): Promise<string> {
   let name: string[] = [];

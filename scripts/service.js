@@ -60,6 +60,76 @@ module.exports = (robot) => {
             res.send(`I don't know how to list ${item}.`);
         }
     });
+    // schedules
+    robot.respond(/createSchedule (.+)/i, async (res) => {
+        let message = [];
+        const allItem = res.match[1].split('--').slice(1)
+            .reduce((acc, item) => {
+            const items = item.trim().split(' ');
+            if (items.length !== 2) {
+                console.log(`Invalid schedule data format: --${item}`);
+                message.push(`Please provide valid schedule data format: --${item}\n`);
+                return acc;
+            }
+            acc[items[0]] = items[1];
+            return acc;
+        }, {});
+        if (message.length > 0) {
+            res.send(message.join(''));
+            return;
+        }
+        if (!allItem["crowiPath"] || !allItem["channelId"] || !allItem["logChannelId"] || !allItem["title"]
+            || !allItem["tag"] || !allItem["startDate"] || !allItem["blogDays"]) {
+            console.log("Missing required schedule data.");
+            res.send("Please provide all required schedule data: crowiPath, channelId, logChannelId, title, tag, startDate, blogDays.");
+            return;
+        }
+        const sData = {
+            crowiPath: allItem["crowiPath"] === undefined ? "" : allItem["crowiPath"],
+            channelId: allItem["channelId"] === undefined ? "" : allItem["channelId"],
+            logChannelId: allItem["logChannelId"] === undefined ? "" : allItem["logChannelId"],
+            title: allItem["title"] === undefined ? "" : allItem["title"],
+            tag: allItem["tag"] === undefined ? "" : allItem["tag"],
+            startDate: allItem["startDate"] === undefined ? new Date() : new Date(allItem["startDate"]),
+            blogDays: allItem["blogDays"] === undefined ? 0 : parseInt(allItem["blogDays"]),
+        };
+        DB.CreateBlogSchedule(sData).then((schedule) => {
+            console.log(`Schedule created: id=${schedule.id}, title=${schedule.title}`);
+            res.send(`Schedule created: id=${schedule.id}, title=${schedule.title}`);
+        }).catch((err) => {
+            console.error("createSchedule error: " + err);
+            res.send("Error creating schedule.");
+        });
+    });
+    robot.respond(/Show schedule (.+)/i, async (res) => {
+        const scheduleId = Number(res.match[1]);
+        if (isNaN(scheduleId)) {
+            console.log(`Invalid schedule ID: ${res.match[1]}`);
+            res.send("Please provide a valid schedule ID.");
+            return;
+        }
+        console.log(`Showing schedule with id: ${scheduleId}`);
+        const schedule = await DB.getScheduleById(scheduleId);
+        if (schedule === null) {
+            console.log(`Schedule not found: id=${scheduleId}`);
+            res.send(`Schedule not found: id=${scheduleId}`);
+            return;
+        }
+        let message = `| Schedule Details | |
+|---|---|
+| id | ${schedule.id}|
+| title | ${schedule.title}|
+| tag | ${schedule.tag}|
+| crowiPath | ${schedule.crowiPath}|
+| channelId | ${schedule.channelId}|
+| logChannelId | ${schedule.logChannelId}|
+| startDate | ${schedule.startDate.toISOString()}|
+| blogDays | ${schedule.blogDays}|
+| status | ${schedule.status}|`;
+        console.log("send Schedule details:\n" + message);
+        res.send(message);
+    });
+    // admins
     robot.respond(/createAdmin (.+)/i, async (res) => {
         const userid = res.match[1];
         if (!traQidRegex.test(userid)) {
@@ -77,22 +147,15 @@ module.exports = (robot) => {
     });
 };
 async function ScheduleList() {
-    let message = "";
-    await DB.getScheduleList()
-        .then((schedules) => {
-        if (schedules.length === 0) {
-            return "No schedules found.";
-        }
-        message = "| id | title |\n|---|---|\n";
-        message += schedules.map((schedule) => {
-            return `| ${schedule.id} | ${schedule.title} |`;
-        }).join('\n');
-        console.log("created schedule list:\n" + message);
-        return message;
-    }).catch((err) => {
-        console.error("getScheduleList error: " + err);
-        return "Error retrieving schedules.";
-    });
+    let schedules = await DB.getScheduleList();
+    if (schedules.length === 0) {
+        return "No schedules found.";
+    }
+    let message = "| id | title |\n|---|---|\n";
+    message += schedules.map((schedule) => {
+        return `| ${schedule.id} | ${schedule.title} |`;
+    }).join('\n');
+    console.log("created schedule list:\n" + message);
     return message;
 }
 async function AdminList() {

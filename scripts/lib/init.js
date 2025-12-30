@@ -78,6 +78,7 @@ function init() {
 - わからないことがあれば気軽に ${traQLogChannelPath} まで
 - 記事内容の添削や相談は、気軽に ${traQReviewChannelPath} へ
 - 詳細は ${url}`;
+    traqAPI.setTraQApi(traQBotToken);
     return {
         crowi: {
             host: crowiHost,

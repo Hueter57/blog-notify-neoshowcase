@@ -4,13 +4,16 @@
 // Commands:
 //
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.setTraQApi = setTraQApi;
 exports.getChannelName = getChannelName;
 exports.getUserName = getUserName;
 const traq_1 = require("@traptitech/traq");
-const init_1 = require("./init");
-const traqApi = new traq_1.Apis(new traq_1.Configuration({
-    accessToken: init_1.envData.traQ.traqBotToken,
-}));
+let traqApi;
+function setTraQApi(traqBotToken) {
+    traqApi = new traq_1.Apis(new traq_1.Configuration({
+        accessToken: traqBotToken,
+    }));
+}
 async function getChannelName(channelid) {
     let name = [];
     try {
