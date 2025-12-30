@@ -61,7 +61,7 @@ module.exports = (robot) => {
         }
     });
     // schedules
-    robot.respond(/createSchedule (.+)/i, async (res) => {
+    robot.respond(/createSchedule ([\s\S]+)/i, async (res) => {
         let message = [];
         const allItem = res.match[1].split('--').slice(1)
             .reduce((acc, item) => {

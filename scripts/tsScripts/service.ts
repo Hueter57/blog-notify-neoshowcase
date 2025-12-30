@@ -30,7 +30,7 @@ module.exports = (robot: hubot.Robot): void => {
 
   // schedules
 
-  robot.respond(/createSchedule (.+)/i, async (res: hubot.Response): Promise<void> => {
+  robot.respond(/createSchedule ([\s\S]+)/i, async (res: hubot.Response): Promise<void> => {
     let message: string[] = [];
     const allItem = res.match[1].split('--').slice(1)
       .reduce((acc: { [data: string]: string }, item: string): { [data: string]: string } => {
