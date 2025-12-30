@@ -4,9 +4,11 @@
 //
 
 import * as hubot from "hubot";
-import { checkEnvData } from "./lib/init";
+import { checkEnvData, envData } from "./lib/init";
 
 module.exports = (robot: hubot.Robot): void => {
+  robot.send({ channelID: envData.traQ.logChannelId },  "bot started");
+
   robot.respond(/ping$/i, async (res: hubot.Response): Promise<void> => {
     await res.reply("pong");
   });
@@ -27,6 +29,7 @@ ${envStatusMessage}`;
     await res.reply(`コマンド一覧\n
 - \`ping\`: BOTの稼働確認\n
 - \`help\`: ヘルプを表示\n
+- \`preview\`: 今日表示するメッセージとログをBOTを呼んだ場所にコードブロックに埋め込んで出力\n
 - \`checkEnvData\`: 環境変数の確認\n
 - \`cronStart\`: cronの開始 (環境変数変更後一度\`checkEnvData\`の実行が必要)\n
 - \`cronStop\`: cronの停止

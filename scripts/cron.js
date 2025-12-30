@@ -43,6 +43,17 @@ const schedule_1 = require("./lib/schedule");
 const cron = __importStar(require("node-cron"));
 module.exports = (robot) => {
     let mainCron = startCron(robot);
+    robot.respond(/preview$/i, async (res) => {
+        const { crowi, blogRelay, noticeMessage } = init_1.envData;
+        const messages = await (0, schedule_1.getMessages)(crowi, blogRelay, noticeMessage);
+        if (messages.length === 0) {
+            console.log("can not get messages");
+            return;
+        }
+        console.log(messages);
+        res.send("```\n" + messages[0] + "```\n");
+        res.send("```\n" + messages[1] + "```\n");
+    });
     robot.hear(/cronStart$/i, async (res) => {
         if (mainCron === null) {
             mainCron = startCron(robot);
@@ -75,6 +86,7 @@ module.exports = (robot) => {
 };
 function startCron(robot) {
     if (init_1.envData.validData === undefined || !init_1.envData.validData) {
+        console.log("env data is invalid");
         return null;
     }
     const { crowi, blogRelay, noticeMessage } = init_1.envData;
@@ -86,6 +98,7 @@ function startCron(robot) {
     let mainCron = cron.schedule("0 0 8 * * *", async () => {
         const messages = await (0, schedule_1.getMessages)(crowi, blogRelay, noticeMessage);
         if (messages.length === 0) {
+            console.log("can not get messages");
             return;
         }
         console.log(messages);
