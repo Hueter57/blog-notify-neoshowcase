@@ -3,11 +3,43 @@
 //
 // Commands:
 //
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.envData = void 0;
 exports.checkEnvData = checkEnvData;
-exports.getChannelName = getChannelName;
-const traq_1 = require("@traptitech/traq");
+const traqAPI = __importStar(require("./traq"));
 exports.envData = init();
 function init() {
     const crowiHost = process.env.CROWI_HOST === undefined ? "" : process.env.CROWI_HOST;
@@ -46,6 +78,7 @@ function init() {
 - わからないことがあれば気軽に ${traQLogChannelPath} まで
 - 記事内容の添削や相談は、気軽に ${traQReviewChannelPath} へ
 - 詳細は ${url}`;
+    traqAPI.setTraQApi(traQBotToken);
     return {
         crowi: {
             host: crowiHost,
@@ -97,7 +130,7 @@ async function checkEnvData() {
         exports.envData.validData = false;
     }
     else {
-        const channelName = await getChannelName(traQ.channelId);
+        const channelName = await traqAPI.getChannelName(traQ.channelId);
         envStatus.push(["TRAQ_CHANNEL_ID", channelName]);
     }
     if (traQ.logChannelId === "") {
@@ -105,7 +138,7 @@ async function checkEnvData() {
         exports.envData.validData = false;
     }
     else {
-        const logChannelName = await getChannelName(traQ.logChannelId);
+        const logChannelName = await traqAPI.getChannelName(traQ.logChannelId);
         envStatus.push(["TRAQ_LOG_CHANNEL_ID", logChannelName]);
     }
     if (traQ.logChannelPath === "") {
@@ -151,30 +184,4 @@ async function checkEnvData() {
         envStatus.push(["BLOG_DAYS", blogRelay.days.toString()]);
     }
     return envStatus;
-}
-async function getChannelName(channelid) {
-    let name = [];
-    const traqApi = new traq_1.Apis(new traq_1.Configuration({
-        accessToken: exports.envData.traQ.traqBotToken,
-    }));
-    try {
-        for (let i = 0; i < 5; i++) {
-            const response = await traqApi.getChannel(channelid);
-            name.unshift(response.data.name);
-            if (response.statusText !== "OK") {
-                return response.statusText;
-            }
-            if (response.data.parentId === null) {
-                break;
-            }
-            else {
-                channelid = response.data.parentId;
-            }
-        }
-        return `#${name.join("/")}`;
-    }
-    catch (error) {
-        console.error(error);
-        return `Error: ${error}`;
-    }
 }

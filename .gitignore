@@ -60,3 +60,7 @@ typings/
 # Hubot stuff
 .DS_Store*
 .hubot_history
+
+/scripts/tsScripts/prisma
+/scripts/prisma
+

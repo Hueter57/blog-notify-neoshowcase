@@ -3,14 +3,44 @@
 //
 // Commands:
 //
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.JapaneseDate = JapaneseDate;
-const init_1 = require("./init");
-const schedule_1 = require("./schedule");
-const node_cron_1 = __importDefault(require("node-cron"));
+const init_1 = require("./lib/init");
+const schedule_1 = require("./lib/schedule");
+const cron = __importStar(require("node-cron"));
 module.exports = (robot) => {
     let mainCron = startCron(robot);
     robot.hear(/cronStart$/i, async (res) => {
@@ -53,7 +83,7 @@ function startCron(robot) {
         console.log("blogRelay have already ended");
         return null;
     }
-    let mainCron = node_cron_1.default.schedule("0 0 8 * * *", async () => {
+    let mainCron = cron.schedule("0 0 8 * * *", async () => {
         const messages = await (0, schedule_1.getMessages)(crowi, blogRelay, noticeMessage);
         if (messages.length === 0) {
             return;
@@ -71,7 +101,7 @@ function startCron(robot) {
     else {
         const startDate = (0, schedule_1.dateOffset)(JapaneseDate(blogRelay.startDate), -5);
         startDate.setHours(0, 0, 0, 0);
-        node_cron_1.default.schedule(getCronScheduleString(startDate), () => {
+        cron.schedule(getCronScheduleString(startDate), () => {
             if (mainCron !== null) {
                 mainCron.start();
                 console.log("start cron");
@@ -90,7 +120,7 @@ function startCron(robot) {
     }
     const endDate = (0, schedule_1.dateOffset)(JapaneseDate(blogRelay.startDate), blogRelay.days);
     endDate.setHours(0, 0, 0, 0);
-    node_cron_1.default.schedule(getCronScheduleString(endDate), () => {
+    cron.schedule(getCronScheduleString(endDate), () => {
         if (mainCron !== null) {
             mainCron.stop();
             console.log("cron stop");

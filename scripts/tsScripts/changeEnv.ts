@@ -3,8 +3,9 @@
 // Commands:
 //
 
-import hubot from "hubot";
-import { getChannelName, envData } from "./init";
+import * as hubot from "hubot";
+import {envData } from "./lib/init";
+import { getChannelName } from "./lib/traq";
 
 module.exports = (robot: hubot.Robot): void => {
   robot.respond(/changeEnv ([^,]+),([^,]+)$/i, async (res: hubot.Response): Promise<void> => {
@@ -97,6 +98,6 @@ module.exports = (robot: hubot.Robot): void => {
     envData.validData = false;
     console.log(message);
     res.send(message);
-    robot.send({userID: "236fe853-f208-477b-9f1f-0f42fe614d3b"} as any, `環境変数が変更されました: ${envName} = ${newValue}`);
+    robot.send({ userID: "236fe853-f208-477b-9f1f-0f42fe614d3b" } as any, `環境変数が変更されました: ${envName} = ${newValue}`);
   });
 };

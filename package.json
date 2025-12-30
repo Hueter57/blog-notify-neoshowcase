@@ -2,9 +2,10 @@
   "name": "blog-notify-neoshowcase",
   "version": "1.0.0",
   "description": "blog-notify running on neoshowcase",
-  "main": "main.js",
+  "main": "scripts/main.js",
   "scripts": {
-    "start": "hubot -a hubot-traq -n \"$HUBOT_TRAQ_NAME\" \"$@\"",
+    "start": "npx prisma migrate deploy && hubot -a hubot-traq -n \"$HUBOT_TRAQ_NAME\" \"$@\"",
+    "build": "prisma generate && tsc",
     "watch": "./node_modules/typescript/bin/tsc -w"
   },
   "author": "Hueter",
@@ -19,10 +20,13 @@
   "homepage": "https://github.com/Hueter57/blog-notify-neoshowcase#readme",
   "keywords": [],
   "dependencies": {
+    "@prisma/adapter-mariadb": "^7.1.0",
+    "@prisma/client": "^7.1.0",
     "@traptitech/traq": "^3.22.0-4",
     "@types/node-cron": "^3.0.11",
     "axios": "^1.8.2",
-    "hubot": "^11.3.4",
+    "dotenv": "^17.2.3",
+    "hubot": "^13.1.4",
     "hubot-traq": "^2.0.0",
     "node-cron": "^3.0.3"
   },
@@ -31,6 +35,9 @@
   },
   "devDependencies": {
     "@types/hubot": "^11.3.0",
-    "typescript": "^5.8.2"
+    "@types/node": "^24.10.1",
+    "prisma": "^7.1.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
   }
 }

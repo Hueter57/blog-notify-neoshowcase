@@ -3,8 +3,8 @@
 // Commands:
 //
 
-import hubot from "hubot";
-import { checkEnvData } from "./init";
+import * as hubot from "hubot";
+import { checkEnvData } from "./lib/init";
 
 module.exports = (robot: hubot.Robot): void => {
   robot.respond(/ping$/i, async (res: hubot.Response): Promise<void> => {

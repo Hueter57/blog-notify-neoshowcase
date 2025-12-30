@@ -4,7 +4,8 @@
 // Commands:
 //
 Object.defineProperty(exports, "__esModule", { value: true });
-const init_1 = require("./init");
+const init_1 = require("./lib/init");
+const traq_1 = require("./lib/traq");
 module.exports = (robot) => {
     robot.respond(/changeEnv ([^,]+),([^,]+)$/i, async (res) => {
         let envName = res.match[1];
@@ -45,7 +46,7 @@ module.exports = (robot) => {
                 message += `「${newValue}」に変更しました`;
                 break;
             case "TRAQ_CHANNEL_ID":
-                const channelName = await (0, init_1.getChannelName)(newValue);
+                const channelName = await (0, traq_1.getChannelName)(newValue);
                 if (channelName.startsWith("Error:")) {
                     res.send("IDが無効です" + channelName);
                     return;
@@ -54,7 +55,7 @@ module.exports = (robot) => {
                 message += `「${newValue}(${channelName})」に変更しました`;
                 break;
             case "TRAQ_LOG_CHANNEL_ID":
-                const logChannelName = await (0, init_1.getChannelName)(newValue);
+                const logChannelName = await (0, traq_1.getChannelName)(newValue);
                 if (logChannelName.startsWith("Error:")) {
                     res.send("IDが無効です" + logChannelName);
                     return;

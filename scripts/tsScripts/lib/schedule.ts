@@ -4,7 +4,7 @@
 //
 
 import { BlogRelayInfo, CrowiInfo } from "./init";
-import { JapaneseDate } from "./cron";
+import { JapaneseDate } from "../cron";
 import { getCrowiPageBody } from "./crowi";
 
 const WRITER_REGEXP = /@[a-zA-Z0-9_-]+/g;
