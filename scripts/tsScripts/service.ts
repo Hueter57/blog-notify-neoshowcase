@@ -96,7 +96,15 @@ module.exports = (robot: hubot.Robot): void => {
 | crowiPath | ${schedule.crowiPath}|
 | channelId | ${schedule.channelId}|
 | logChannelId | ${schedule.logChannelId}|
-| startDate | ${schedule.startDate.toISOString()}|
+| startDate | ${schedule.startDate.toLocaleString('ja-JP', {
+    timeZone: 'Asia/Tokyo',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit'
+  })}|
 | blogDays | ${schedule.blogDays}|
 | status | ${schedule.status}|`;
     console.log("send Schedule details:\n" + message);

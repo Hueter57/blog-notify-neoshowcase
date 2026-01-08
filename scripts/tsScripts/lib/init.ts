@@ -149,7 +149,15 @@ export async function checkScheduleData(scheduleId: number): Promise<string[][]>
     scheduleStatus.push(["START_DATE", "undefined"]);
     status = false;
   } else {
-    scheduleStatus.push(["START_DATE", schedule.startDate.toLocaleString()]);
+    scheduleStatus.push(["START_DATE", schedule.startDate.toLocaleString('ja-JP', {
+      timeZone: 'Asia/Tokyo',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit'
+    })]);
   }
   if (schedule.blogDays === 0) {
     scheduleStatus.push(["BLOG_DAYS", "undefined"]);
