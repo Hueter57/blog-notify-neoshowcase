@@ -4,10 +4,28 @@
 //
 
 import * as hubot from "hubot";
-import { checkEnvData, envData } from "./lib/init";
+import { checkEnvData, checkScheduleData, envData } from "./lib/init";
+
+async function setup(): Promise<void> {
+  const envStatusList = await checkEnvData();
+  if (envData.validData) {
+    console.log("環境変数の設定に問題はありません。");
+  } else {
+    console.log("環境変数の設定に問題があります。");
+  }
+  const envStatusMessage = envStatusList
+    .map((envStatus) => envStatus.join(" | "))
+    .join("\n");
+  const message = `env name | status
+--- | ---
+${envStatusMessage}`;
+  console.log(message);
+}
+
+setup();
 
 module.exports = (robot: hubot.Robot): void => {
-  robot.send({ channelID: envData.traQ.logChannelId },  "bot started");
+  robot.send({ channelID: envData.botLogChannelId },  "bot started");
 
   robot.respond(/ping$/i, async (res: hubot.Response): Promise<void> => {
     await res.reply("pong");
@@ -15,6 +33,25 @@ module.exports = (robot: hubot.Robot): void => {
 
   robot.hear(/checkEnvData$/i, async (res: hubot.Response): Promise<void> => {
     const envStatusList = await checkEnvData();
+    const envStatusMessage = envStatusList
+      .map((envStatus) => envStatus.join(" | "))
+      .join("\n");
+    const message = `env name | status
+--- | ---
+${envStatusMessage}`;
+    console.log(message);
+    res.send(message);
+  });
+
+  robot.hear(/checkScheduleData (.*)$/i, async (res: hubot.Response): Promise<void> => {
+    const scheduleId = Number(res.match[1]);
+    if (isNaN(scheduleId)) {
+      console.log(`Invalid schedule ID: ${res.match[1]}`);
+      res.send("Please provide a valid schedule ID.");
+      return;
+    }
+    // TODO: 続き実装
+    const envStatusList = await checkScheduleData(scheduleId);
     const envStatusMessage = envStatusList
       .map((envStatus) => envStatus.join(" | "))
       .join("\n");
@@ -37,3 +74,4 @@ ${envStatusMessage}`;
     - <key> \`TITLE\`, \`TAG\`, \`START_DATE\`, \`BLOG_DAYS\`, \`TRAQ_CHANNEL_ID\`, \`TRAQ_LOG_CHANNEL_ID\`, \`TRAQ_LOG_CHANNEL_PATH\`, \`TRAQ_REVIEW_CHANNEL_PATH\`, \`CROWI_PAGE_PATH\``);
   });
 };
+

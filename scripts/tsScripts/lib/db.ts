@@ -74,7 +74,18 @@ export async function CreateBlogSchedule(sData: CreateScheduleData): Promise<Sch
   return schedule;
 }
 
-
+export async function updateBlogScheduleStatus(scheduleId: number, status: string): Promise<Schedule> {
+  const schedule: Schedule = await prisma.schedule.update({
+    where: {
+      id: scheduleId,
+    },
+    data: {
+      status: status,
+    },
+  });
+  console.log(schedule);
+  return schedule;
+}
 
 // admin
 
