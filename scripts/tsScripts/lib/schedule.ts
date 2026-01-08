@@ -102,11 +102,9 @@ function extractSchedule(pageBody: string): Schedule[] {
 
 // START_DATEとの差分を取得する
 // now - date
-export function calcDateDiff({ startDate }: BlogRelayInfo): number {
-  const date = JapaneseDate(startDate);
-  const dateUtcTime = date.getTime() + date.getTimezoneOffset() * 60 * 1000;
-  const today = JapaneseDate();
-  const nowUtcTime = today.getTime() + today.getTimezoneOffset() * 60 * 1000;
+export function calcDateDiff(startDate: Date): number {
+  const dateUtcTime = startDate.getTime();
+  const nowUtcTime = new Date().getTime();
   const diff = nowUtcTime - dateUtcTime;
   return Math.floor(diff / (1000 * 60 * 60 * 24));
 }

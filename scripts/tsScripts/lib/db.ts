@@ -19,6 +19,11 @@ export type Schedule = {
   blogDays: number;
 };
 
+export type ScheduleStatus = {
+  id: number;
+  status: string;
+};
+
 export type CreateScheduleData = {
   crowiPath: string;
   channelId: string;
@@ -56,6 +61,18 @@ export async function getScheduleById(scheduleId: number): Promise<Schedule | nu
   return schedule;
 }
 
+export async function getScheduleStatus(): Promise<ScheduleStatus | null> {
+  const scheduleStatus: ScheduleStatus | null = await prisma.schedule.findFirst({
+    select: {
+      id: true,
+      status: true,
+    },
+    where: {
+      status: 'running',
+    },
+  });
+  return scheduleStatus;
+}
 
 export async function CreateBlogSchedule(sData: CreateScheduleData): Promise<Schedule> {
   const schedule: Schedule = await prisma.schedule.create({
@@ -85,6 +102,19 @@ export async function updateBlogScheduleStatus(scheduleId: number, status: strin
   });
   console.log(schedule);
   return schedule;
+}
+
+export async function updateBlogScheduleStatusStop(): Promise<number> {
+  const result = await prisma.schedule.updateMany({
+    where: {
+      status: 'running',
+    },
+    data: {
+      status: 'checked',
+    },
+  });
+  console.log(result);
+  return result.count;
 }
 
 // admin
