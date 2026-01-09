@@ -123,6 +123,9 @@ export async function checkScheduleData(scheduleId: number): Promise<string[][]>
     status = false;
   } else {
     const channelName = await traqAPI.getChannelName(schedule.channelId);
+    if (channelName.includes("Error")) {
+      status = false;
+    }
     scheduleStatus.push(["TRAQ_CHANNEL_ID", channelName]);
   }
   if (schedule.logChannelId === "") {
@@ -130,6 +133,9 @@ export async function checkScheduleData(scheduleId: number): Promise<string[][]>
     status = false;
   } else {
     const logChannelName = await traqAPI.getChannelName(schedule.logChannelId);
+    if (logChannelName.includes("Error")) {
+      status = false;
+    }
     scheduleStatus.push(["TRAQ_LOG_CHANNEL_ID", logChannelName]);
   }
 
@@ -167,6 +173,8 @@ export async function checkScheduleData(scheduleId: number): Promise<string[][]>
   }
   if (status && schedule.status !== "running") {
     DB.updateBlogScheduleStatus(scheduleId, "checked");
+  }else if (!status && schedule.status !== "running") {
+    DB.updateBlogScheduleStatus(scheduleId, "unChecked");
   }
   return scheduleStatus;
 }
