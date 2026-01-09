@@ -3,16 +3,17 @@
 // Commands:
 //
 
-import { BlogRelayInfo, CrowiInfo } from "./init";
+import { CrowiInfo, envData } from "./init";
 import { JapaneseDate } from "../cron";
 import { getCrowiPageBody } from "./crowi";
+import * as DB from "./db";
+import * as traqAPI from "./traq";
 
 const WRITER_REGEXP = /@[a-zA-Z0-9_-]+/g;
 
 export async function getMessages(
   crowi: CrowiInfo,
-  blogRelay: BlogRelayInfo,
-  noticeMessage: string
+  schedule: DB.Schedule
 ): Promise<string[]> {
   const pageBody = await getCrowiPageBody(crowi);
   if (pageBody === "") {
@@ -21,26 +22,37 @@ export async function getMessages(
   }
 
   const schedules = extractSchedule(pageBody);
-  const dateDiff = calcDateDiff(blogRelay);
+  const dateDiff = calcDateDiff(schedule.startDate);
   const messageHead =
     dateDiff < 0
-      ? getBeforeMessage(blogRelay.title, -dateDiff)
-      : getDuringMessage(blogRelay.title, dateDiff, schedules);
-  const logMessage = schedulesToCalendar(blogRelay, schedules);
+      ? getBeforeMessage(schedule.title, -dateDiff)
+      : getDuringMessage(schedule.title, dateDiff, schedules);
+  const logMessage = schedulesToCalendar(schedule, schedules);
+  const url = `https://${crowi.host}${schedule.crowiPath}`;
+  const logChannelName = await traqAPI.getChannelName(schedule.logChannelId);
+  const noticeMessage = `
+  ## 注意事項
+  - \`${schedule.tag}\`のタグをつけてください
+  - 記事の初めにブログリレー何日目の記事かを明記してください
+  - 記事の最後に次の日の担当者を紹介してください
+  - **post imageを設定して**ください
+  - わからないことがあれば気軽に ${logChannelName} まで
+  - 記事内容の添削や相談は、気軽に #random/review へ
+  - 詳細は ${url}`;
   return [messageHead + noticeMessage, logMessage];
 }
 
 
 export async function getLogMessage(
   crowi: CrowiInfo,
-  blogRelay: BlogRelayInfo
+  schedule: DB.Schedule
 ): Promise<string> {
   const pageBody = await getCrowiPageBody(crowi);
   if (pageBody === "") {
     return "";
   }
   const schedules = extractSchedule(pageBody);
-  return schedulesToCalendar(blogRelay, schedules);
+  return schedulesToCalendar(schedule, schedules);
 }
 
 type Schedule = {
@@ -148,14 +160,13 @@ function scheduleToString(s: Schedule): string {
 
 // scheduleからカレンダーを生成する(log用)
 function schedulesToCalendar(
-  blogRelayInfo: BlogRelayInfo,
+  blogSchedule: DB.Schedule,
   schedules: Schedule[]
 ): string {
   const weeks: Array<Array<[Date, Schedule[]]>> = [];
   let i = 0;
   const scheduleLength = schedules.length;
-  const startDate = JapaneseDate(blogRelayInfo.startDate);
-  const calendarStartDate = dateOffset(startDate, -startDate.getDay());
+  const calendarStartDate = dateOffset(blogSchedule.startDate, -blogSchedule.startDate.getDay());
   while (i < scheduleLength) {
     const week: Array<[Date, Schedule[]]> = [];
     const weekStartDate = dateOffset(calendarStartDate, weeks.length * 7);
@@ -164,7 +175,7 @@ function schedulesToCalendar(
       const date = dateOffset(weekStartDate, weekDay);
       while (
         i < scheduleLength &&
-        actualDateOfSchedule(blogRelayInfo, schedules[i]).getDay() === weekDay
+        actualDateOfSchedule(blogSchedule.startDate, schedules[i]).getDay() === weekDay
       ) {
         day.push(schedules[i]);
         i++;
@@ -201,14 +212,12 @@ export function dateOffset(date: Date, offset: number): Date {
 }
 
 function actualDateOfSchedule(
-  { startDate }: BlogRelayInfo,
+  startDate: Date,
   schedule: Schedule
 ): Date {
-  // UNIXタイムスタンプ
-  const startDateParsed = JapaneseDate(startDate);
   // 経過日数のms
   const offset = schedule.day - 1;
-  return dateOffset(startDateParsed, offset);
+  return dateOffset(startDate, offset);
 }
 
 function scheduleToStringInCalendar(schedule: Schedule): string {
