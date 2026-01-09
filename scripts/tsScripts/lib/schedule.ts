@@ -15,7 +15,7 @@ export async function getMessages(
   crowi: CrowiInfo,
   schedule: DB.Schedule
 ): Promise<string[]> {
-  const pageBody = await getCrowiPageBody(crowi);
+  const pageBody = await getCrowiPageBody(crowi, schedule.crowiPath);
   if (pageBody === "") {
     console.log("pageBody is empty");
     return [];
@@ -47,7 +47,7 @@ export async function getLogMessage(
   crowi: CrowiInfo,
   schedule: DB.Schedule
 ): Promise<string> {
-  const pageBody = await getCrowiPageBody(crowi);
+  const pageBody = await getCrowiPageBody(crowi, schedule.crowiPath);
   if (pageBody === "") {
     return "";
   }

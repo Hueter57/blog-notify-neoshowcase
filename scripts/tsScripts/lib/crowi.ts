@@ -18,9 +18,8 @@ type CrowiGetPageResponse = {
 
 export async function getCrowiPageBody({
   host,
-  pagePath,
   token,
-}: CrowiInfo): Promise<string> {
+}: CrowiInfo, pagePath: string): Promise<string> {
   const encodedPath = encodeURI(pagePath);
   const options: AxiosRequestConfig = {
     url: `https://${host}/_api/pages.get?access_token=${token}&path=${encodedPath}`,
